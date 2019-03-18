@@ -41,10 +41,12 @@ board::board()
    black_pieces = 2;
    white_pieces = 2;
    
-
+   //sets the players icons
    player = 'B';
    agent = 'W';
 
+   //set up turn number
+   turnNumber =0;
 
 }
 
@@ -54,6 +56,16 @@ board::~board()
 }
 
 
+
+//Determines who's turn it is
+char board:: whosTurn()
+{
+   if(turnNumber % 2 ==1)
+      return 'W';
+   else
+      return 'B';    
+
+}
 
 // find the current player move's  pieces
 //when found check  (in the continuing) up down left right diagonal for oposing player pieces
@@ -72,12 +84,10 @@ void board::generateMoves(char player)
         {
             if (othello_field[i][j] == player)
 	    {
-	       cout << "found spot";
-               
+	       cout << "found spot";               
 	    }       
         }
     }
-
 }
 
 
@@ -101,7 +111,7 @@ void board::drawBoard()
     {
       cout << i+1 <<" ";
 
-    }
+    } 
     cout <<endl;
 
     //displays the rows and content of the baord

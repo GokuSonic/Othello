@@ -7,10 +7,12 @@ using namespace std;
 class board
 {
 
+    private:
     //needed for the start state of the program
     char othello_field[8][8];
     int black_pieces;
     int white_pieces;
+    int turnNumber;
     int black_array[31];
     int white_array[31];
     char player;
@@ -18,7 +20,7 @@ class board
 
 
     //functions the user doesnt need to use
-    private:
+
     bool checkPlacement(int,int);
     bool checkAcross();;
     bool checkRow();
@@ -26,7 +28,7 @@ class board
     bool isFull();
     void generateMoves(char);
     void isValidSpot(int,int);
-
+    char whosTurn();
     
 
      //functions the user and agent will use
