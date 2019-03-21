@@ -12,7 +12,6 @@ int main()
     int move;
 
     cout <<"\n----Player's turn----" <<endl;
-
     myGame.generateMoves();
     cout << "Choose one of the moves: " << endl;
     cin >> move;

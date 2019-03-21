@@ -11,6 +11,8 @@
 board::board()
 {
 
+    move_count =0;
+
     //inital state of the board
     for(int i =0; i <8; i++)
     {
@@ -44,10 +46,6 @@ board::board()
    black_pieces = 2;
    white_pieces = 2;
    
-   //sets the players icons
-   player = 'B';
-   agent = 'W';
-
    //set up turn number
    turnNumber =0;
 
@@ -88,6 +86,7 @@ void board::generateMoves()
 
     //gets the current player
     player =  whosTurn();
+    //search able player
     char s_player;
      
     //searches for the other player's pieces
@@ -106,7 +105,7 @@ void board::generateMoves()
             if (othello_field[i][j] == s_player)
 	    {
 	      cout << "found spot " << i << " , " << j << " for: " << s_player <<endl;           
-                isValidSpot(i,j);   
+	      isValidSpot(i,j,player);   
 	    }       
         }
     }
@@ -121,18 +120,19 @@ void board::checker()
 
 
 
+
+
 }
 
 
 
 //checks if valid spot
-bool board::isValidSpot(int row,int column)
+void board::isValidSpot(int row,int column, char current_player)
 {
      int flip, temp_row,temp_col;   
+     
+     move my_move;
 
-  
-     //gets the current player
-     player =  whosTurn();  
 
      //check up
      if(othello_field[row -1][column] == ' ')
@@ -153,7 +153,16 @@ bool board::isValidSpot(int row,int column)
          if(flip >0)
 	 {
 
-	   othello_field[row-1][column] = (char) (flip+48);
+	   othello_field[row-1][column] = (char) (move_count+48);
+	   
+	   my_move.dir = UP;
+	   my_move.flip_count = flip;
+           my_move.row = row -1;
+           my_move.column = column;
+           
+	   possible_moves[move_count] = my_move;
+           move_count ++;
+
 	 }
      }
 
@@ -176,7 +185,16 @@ bool board::isValidSpot(int row,int column)
          if(flip >0)
 	 {
 
-	     othello_field[row][column-1] = (char) (flip+48);
+	     othello_field[row][column-1] = (char) (move_count+48);
+
+	     my_move.dir = LEFT;
+	     my_move.flip_count = flip;
+	     my_move.row = row;
+	     my_move.column = column-1;
+
+	     possible_moves[move_count] = my_move;
+	     move_count ++;
+
 	 }
      }
 
@@ -200,7 +218,17 @@ bool board::isValidSpot(int row,int column)
          if(flip >0)
 	   {
 
-             othello_field[row+1][column] = (char) (flip+48);
+             othello_field[row+1][column] = (char) (move_count+48);
+            
+
+             my_move.dir = DOWN;
+             my_move.flip_count = flip;
+             my_move.row = row +1;
+             my_move.column = column;
+
+             possible_moves[move_count] = my_move;
+              move_count ++;
+
 	   }
        }
 
@@ -223,7 +251,16 @@ bool board::isValidSpot(int row,int column)
          if(flip >0)
 	   {
 
-             othello_field[row][column+1] = (char) (flip+48);
+             othello_field[row][column+1] = (char) (move_count+48);
+   
+             my_move.dir = RIGHT;
+             my_move.flip_count = flip;
+             my_move.row = row;
+             my_move.column = column+1;
+
+             possible_moves[move_count] = my_move;
+	     move_count ++;
+
 	   }
        }
 
@@ -237,6 +274,7 @@ bool board::isValidSpot(int row,int column)
 void board::drawBoard()
 {
 
+  cout << "*****Turn: " << turnNumber+1 << " *****" <<endl;
     //formating
     cout << "  ";
     //displays the numbering on the top of the board

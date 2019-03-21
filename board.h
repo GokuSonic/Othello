@@ -3,10 +3,12 @@
 
 using namespace std;
 
+typedef enum {UP,DOWN,LEFT,RIGHT,upLeft,upRight, downLeft, downRight} direction;
+
 
 struct move
 {
-    enum direction {up,down,left,right, upLeft, upRight, downLeft, downRight};
+    direction dir;
     int flip_count; 
     int row;
     int column;
@@ -18,8 +20,10 @@ class board
 
     private:
     //needed for the start state of the program
+    move possible_moves[70];
     char othello_field[8][8];
     int possibleMove[2][64];
+    int move_count;
     int black_pieces;
     int white_pieces;
     int turnNumber;
@@ -37,7 +41,7 @@ class board
     bool checkCol();
     bool isFull();
 
-    bool isValidSpot(int,int);
+    void isValidSpot(int,int,char);
     char whosTurn();
     void checker();    
 
