@@ -4,12 +4,22 @@
 using namespace std;
 
 
+struct move
+{
+    enum direction {up,down,left,right, upLeft, upRight, downLeft, downRight};
+    int flip_count; 
+    int row;
+    int column;
+    
+};
+
 class board
 {
 
     private:
     //needed for the start state of the program
     char othello_field[8][8];
+    int possibleMove[2][64];
     int black_pieces;
     int white_pieces;
     int turnNumber;
@@ -26,17 +36,17 @@ class board
     bool checkRow();
     bool checkCol();
     bool isFull();
-    void generateMoves(char);
-    void isValidSpot(int,int);
+
+    bool isValidSpot(int,int);
     char whosTurn();
-    
+    void checker();    
 
      //functions the user and agent will use
      public:
      void drawBoard();
      void place(int,int, char);
      bool checkSpace(int,int);
-
+     void generateMoves();
 
      board();
     ~board();

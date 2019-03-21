@@ -10,6 +10,7 @@
 //constructor
 board::board()
 {
+
     //inital state of the board
     for(int i =0; i <8; i++)
     {
@@ -19,21 +20,23 @@ board::board()
 	}
     }
 
-    //i had a plan here but went with another... 
-
-    /*    //zero out position arrays
-    for(int i =0; i<31 ; i++)
-    {
-        black_array [i]=0;
-        white_array [i]=0;
-    }
-    */
-
    //starting 4 pieces
-   othello_field[3][3]= 'B';
-   othello_field[3][4]= 'W';
-   othello_field[4][3]= 'W';
-   othello_field[4][4]= 'B';
+   othello_field[3][3]= 'W';
+   othello_field[3][4]= 'B';
+   othello_field[4][3]= 'B';
+   othello_field[4][4]= 'W';
+
+   //test board pieces this will seg fault
+   /* othello_field[0][0]= 'W';
+   othello_field[7][7]= 'W';
+   othello_field[0][7]= 'W';
+   othello_field[7][0]= 'W';
+
+   othello_field[0][1]= 'B';
+   othello_field[6][7]= 'B';
+   othello_field[0][6]= 'B';
+   othello_field[6][0]= 'B';
+   */
 
 
 
@@ -49,6 +52,7 @@ board::board()
    turnNumber =0;
 
 }
+
 
 //deconstructor
 board::~board()
@@ -67,33 +71,162 @@ char board:: whosTurn()
 
 }
 
-// find the current player move's  pieces
-//when found check  (in the continuing) up down left right diagonal for oposing player pieces
-// if found at direction check opposing direction if space  is ' '
-//then is possible move change to current counter space.
-
 
 
 //generate possible moves (NEEDS FLIP AMOUNT FUNCTION)
-void board::generateMoves(char player)
+void board::generateMoves()
 {
+
+   //clear the array of spots found
+   for(int i =0; i <2; i++)
+   {
+      for(int j=0; j<64; j++)
+        {
+	  possibleMove[i][j] = -1;
+        }
+   }
+
+    //gets the current player
+    player =  whosTurn();
+    char s_player;
+     
+    //searches for the other player's pieces
+    if (player == 'W')
+      s_player = 'B';
+    else
+      s_player = 'W';
+
+ 
     //search the board for possible moves from top left to bottom right 
     for(int i =0; i <8; i++)
     {
         for(int j=0; j<8; j++)
         {
-            if (othello_field[i][j] == player)
+	    //is the space isnt blank then check if its the other player
+            if (othello_field[i][j] == s_player)
 	    {
-	       cout << "found spot";               
+	      cout << "found spot " << i << " , " << j << " for: " << s_player <<endl;           
+                isValidSpot(i,j);   
 	    }       
         }
     }
+
+    drawBoard();
 }
 
 
-//checks if valid spot
-void board::isValidSpot(int row,int column)
+//from the found spots check spaces around those for possible moves
+void board::checker()
 {
+
+
+
+}
+
+
+
+//checks if valid spot
+bool board::isValidSpot(int row,int column)
+{
+     int flip, temp_row,temp_col;   
+
+  
+     //gets the current player
+     player =  whosTurn();  
+
+     //check up
+     if(othello_field[row -1][column] == ' ')
+     {
+        
+         flip =0;     
+         temp_row =row;
+	 temp_col= column;
+         
+       
+         while( othello_field[temp_row][temp_col] != player)
+	 {
+ 
+    	     flip ++;
+             temp_row ++;
+	 }
+         
+         if(flip >0)
+	 {
+
+	   othello_field[row-1][column] = (char) (flip+48);
+	 }
+     }
+
+     //check left
+     if(othello_field[row][column-1] == ' ')
+     {
+
+         flip =0;
+         temp_row =row;
+         temp_col= column;
+
+
+         while( othello_field[temp_row][temp_col] != player)
+	 {
+
+             flip ++;
+             temp_col ++;
+	 }
+
+         if(flip >0)
+	 {
+
+	     othello_field[row][column-1] = (char) (flip+48);
+	 }
+     }
+
+
+     //check down
+     if(othello_field[row+1][column] == ' ')
+     {
+
+         flip =0;
+         temp_row =row;
+         temp_col= column;
+
+
+         while( othello_field[temp_row][temp_col] != player)
+	   {
+
+             flip ++;
+             temp_row --;
+	   }
+
+         if(flip >0)
+	   {
+
+             othello_field[row+1][column] = (char) (flip+48);
+	   }
+       }
+
+     //check right
+     if( othello_field[row][column+1] == ' ')
+     {
+
+         flip =0;
+         temp_row =row;
+         temp_col= column;
+
+
+         while( othello_field[temp_row][temp_col] != player)
+	   {
+
+             flip ++;
+             temp_col --;
+	   }
+
+         if(flip >0)
+	   {
+
+             othello_field[row][column+1] = (char) (flip+48);
+	   }
+       }
+
 
 
 }
@@ -109,7 +242,7 @@ void board::drawBoard()
     //displays the numbering on the top of the board
     for(int i =0; i <8; i++)
     {
-      cout << i+1 <<" ";
+      cout << i <<" ";
 
     } 
     cout <<endl;
@@ -118,7 +251,7 @@ void board::drawBoard()
     for(int i =0; i <8; i++)
     {
          //formatting
-         cout << i+1 <<"|";
+         cout << i <<"|";
          for(int j=0; j<8; j++)
 	 {
              cout << othello_field[i][j] << "|";
