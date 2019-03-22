@@ -127,7 +127,7 @@ void board::isValidSpot(int row,int column, char current_player)
   //check up
   if(row != 0)
     {
-      if(othello_field[row -1][column] == ' ')
+      if(othello_field[row -1][column] == ' '|| (othello_field[row - 1][column] >= (char)48 && othello_field[row - 1][column] <= (char)57))
 	{
 
 	  flip =0;     
@@ -136,6 +136,8 @@ void board::isValidSpot(int row,int column, char current_player)
 	         
 	  while( othello_field[temp_row][temp_col] != player)
 	    {
+	      //char tester = othello_field[temp_row][temp_col];
+	      //cout << endl << endl << endl << "this is what's in the field: " << tester << endl << endl << endl;
 	      if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
 		{
 		  flip = 0;
@@ -157,15 +159,16 @@ void board::isValidSpot(int row,int column, char current_player)
            
 	      possible_moves[move_count] = my_move;
 	      move_count ++;
-
 	    }
 	}
+      cout << "drawboard for up" << endl << endl;
+      drawBoard();
     }
 
   //check left
   if(column !=0)
     { 
-      if(othello_field[row][column-1] == ' ')
+      if(othello_field[row][column-1] == ' ' || (othello_field[row][column - 1] >= (char)48 && othello_field[row][column - 1] <= (char)57))
 	{
 	  
 	  flip =0;
@@ -199,12 +202,15 @@ void board::isValidSpot(int row,int column, char current_player)
 	      
 	    }
 	}
+      cout << "drawboard for left" << endl << endl;
+      drawBoard();
+
     }
   
   //check down
   if(row !=7)
     {
-      if(othello_field[row+1][column] == ' ')
+      if(othello_field[row+1][column] == ' ' || (othello_field[row][column + 1] >= (char)48 && othello_field[row][column + 1] <= (char)57))
 	{
 	  
 	  flip =0;
@@ -237,12 +243,14 @@ void board::isValidSpot(int row,int column, char current_player)
 	    
 	  }
       }
+      cout << "drawboard for down" << endl << endl;
+      drawBoard();
   }
 
 //check right
 if(column !=7)
   {
-    if( othello_field[row][column+1] == ' ')
+    if( othello_field[row][column+1] == ' ' || (othello_field[row][column + 1] >= (char)48 && othello_field[row][column + 1] <= (char)57))
       {
 	
 	flip =0;
@@ -276,12 +284,14 @@ if(column !=7)
 	    
 	  }
       }
+    cout << "drawboard for right" << endl << endl;
+    drawBoard();
   }
 
 //upLeft
  if(row != 0 || column != 0)
    {
-     if(othello_field[row -1][column - 1] == ' ')
+     if(othello_field[row -1][column - 1] == ' ' || (othello_field[row - 1][column - 1] >= (char)48 && othello_field[row - 1][column - 1] <= (char)57))
        {
 
 	 flip =0;
@@ -316,12 +326,14 @@ if(column !=7)
 
 	   }
        }
+     cout << "drawboard for upLeft" << endl << endl;
+     drawBoard();
    }
-
+ /*
  //upRight
  if(row != 0 || column != 7)
    {
-     if(othello_field[row -1][column + 1] == ' ')
+     if(othello_field[row -1][column + 1] == ' ' || (othello_field[row - 1][column + 1] >= (char)48 && othello_field[row - 1][column + 1] <= (char)57))
        {
 
          flip =0;
@@ -356,11 +368,13 @@ if(column !=7)
 
            }
        }
+     cout << "drawboard for upRight" << endl << endl;
+     drawBoard();
    }
  //downLeft
  if(row != 7 || column != 0)
    {
-     if(othello_field[row + 1][column - 1] == ' ')
+     if(othello_field[row + 1][column - 1] == ' ' || (othello_field[row + 1][column - 1] >= (char)48 && othello_field[row + 1][column - 1] <= (char)57))
        {
 
          flip =0;
@@ -395,12 +409,14 @@ if(column !=7)
 
            }
        }
+     cout << "drawboard for downLeft" << endl << endl;
+     drawBoard();
    }
 
  //downRight
  if(row != 7 || column != 7)
    {
-     if(othello_field[row + 1][column + 1] == ' ')
+     if(othello_field[row + 1][column + 1] == ' ' || (othello_field[row + 1][column + 1] >= (char)48 && othello_field[row + 1][column + 1] <= (char)57))
        {
 
          flip =0;
@@ -435,8 +451,10 @@ if(column !=7)
 
            }
        }
+     cout << "drawboard for downRight" << endl << endl;
+     drawBoard();
    }
-
+*/
 
 }
 
@@ -474,7 +492,7 @@ void board::sendMove(int choice)
 	     
 	  row ++;
 	  othello_field[row][column] = current_player;
-	  black_pieces ++;
+	  black_pieces++;
 	  white_pieces--;
 
 	}
