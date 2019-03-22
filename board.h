@@ -48,9 +48,10 @@ class board
      //functions the user and agent will use
      public:
      void drawBoard();
-     void place(int,int, char);
+      void place(int,int, char);
      bool checkSpace(int,int);
      void generateMoves();
+     void sendMove(int);
 
      board();
     ~board();
