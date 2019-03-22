@@ -122,20 +122,21 @@ void board::isValidSpot(int row,int column, char current_player)
      move my_move;
 
 
+
      //check up
      if(row != 0)
      {
           if(othello_field[row -1][column] == ' ')
           {
-        
+
              flip =0;     
              temp_row =row;
 	     temp_col= column;
          
        
-             while( othello_field[temp_row][temp_col] != player )
+             while( othello_field[temp_row][temp_col] != player &&  othello_field[temp_row][temp_col] != ' ' )
     	     {
- 
+	       cout << "space: " << othello_field[temp_row][temp_col] <<endl;     
     	         flip ++;
                  temp_row ++;
 	     }
@@ -168,7 +169,7 @@ void board::isValidSpot(int row,int column, char current_player)
 	      temp_col= column;
 
 
-	       while( othello_field[temp_row][temp_col] != player)
+	       while( othello_field[temp_row][temp_col] != player &&  othello_field[temp_row][temp_col] != ' ' )
 	       {
 
 		   flip ++;
@@ -203,7 +204,7 @@ void board::isValidSpot(int row,int column, char current_player)
 	     temp_col= column;
 
 
-              while( othello_field[temp_row][temp_col] != player)
+              while( othello_field[temp_row][temp_col] != player &&  othello_field[temp_row][temp_col] != ' ' )
      	      {
 
                    flip ++;
@@ -238,7 +239,7 @@ void board::isValidSpot(int row,int column, char current_player)
 	      temp_col= column;
 
 
-	      while( othello_field[temp_row][temp_col] != player)
+	      while( othello_field[temp_row][temp_col] != player &&  othello_field[temp_row][temp_col] != ' ' )
 	      {
 
 	 	flip ++;
@@ -373,7 +374,9 @@ void board::sendMove(int choice)
 void board::drawBoard()
 {
 
-  cout << "*****Turn: " << turnNumber+1 << " *****" <<endl;
+    cout << "*****Turn: " << turnNumber+1 << " *****" <<endl;
+    cout << "\tGo player : " <<  whosTurn()<< endl;
+
     //formating
     cout << "  ";
     //displays the numbering on the top of the board
