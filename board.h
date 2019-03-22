@@ -22,7 +22,6 @@ class board
     //needed for the start state of the program
     move possible_moves[70];
     char othello_field[8][8];
-    int possibleMove[2][64];
     int move_count;
     int black_pieces;
     int white_pieces;
@@ -36,14 +35,10 @@ class board
     //functions the user doesnt need to use
 
     bool checkPlacement(int,int);
-    bool checkAcross();;
-    bool checkRow();
-    bool checkCol();
     bool isFull();
 
     void isValidSpot(int,int,char);
     char whosTurn();
-    void checker();    
 
      //functions the user and agent will use
      public:

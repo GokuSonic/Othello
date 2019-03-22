@@ -73,14 +73,14 @@ char board:: whosTurn()
 void board::generateMoves()
 {
 
+   move my_move;
    //clear the array of spots found
-   for(int i =0; i <2; i++)
+   for(int i =0; i>move_count; i++)
    {
-      for(int j=0; j<64; j++)
-        {
-	  possibleMove[i][j] = -1;
-        }
+       possible_moves[i] =my_move;      
+ 
    }
+   move_count =0;
 
     //gets the current player
     player =  whosTurn();
@@ -111,16 +111,6 @@ void board::generateMoves()
     drawBoard();
 }
 
-
-//from the found spots check spaces around those for possible moves
-void board::checker()
-{
-
-
-
-
-
-}
 
 
 
