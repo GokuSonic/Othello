@@ -161,8 +161,6 @@ void board::isValidSpot(int row,int column, char current_player)
 	      move_count ++;
 	    }
 	}
-      cout << "drawboard for up" << endl << endl;
-      drawBoard();
     }
 
   //check left
@@ -202,9 +200,6 @@ void board::isValidSpot(int row,int column, char current_player)
 	      
 	    }
 	}
-      cout << "drawboard for left" << endl << endl;
-      drawBoard();
-
     }
   
   //check down
@@ -243,8 +238,6 @@ void board::isValidSpot(int row,int column, char current_player)
 	    
 	  }
       }
-      cout << "drawboard for down" << endl << endl;
-      drawBoard();
   }
 
 //check right
@@ -284,12 +277,10 @@ if(column !=7)
 	    
 	  }
       }
-    cout << "drawboard for right" << endl << endl;
-    drawBoard();
-  }
+   }
 
 //upLeft
- if(row != 0 || column != 0)
+/* if(row != 0 || column != 0)
    {
      if(othello_field[row -1][column - 1] == ' ' || (othello_field[row - 1][column - 1] >= (char)48 && othello_field[row - 1][column - 1] <= (char)57))
        {
@@ -326,9 +317,7 @@ if(column !=7)
 
 	   }
        }
-     cout << "drawboard for upLeft" << endl << endl;
-     drawBoard();
-   }
+ }
  /*
  //upRight
  if(row != 0 || column != 7)
@@ -458,6 +447,25 @@ if(column !=7)
 
 }
 
+void board::updatePieces()
+{
+
+  char current_player =  whosTurn();
+
+  if(current_player == 'W')
+  {
+      white_pieces ++;
+      black_pieces --;
+  }
+  else
+  {
+      white_pieces --;
+      black_pieces ++;
+  }
+
+}
+
+
 
 //finializes the move to the board clears all the numbers on the board
 //updates black and white pieces
@@ -475,36 +483,71 @@ void board::sendMove(int choice)
 
   char current_player =  whosTurn();
 
-
+  //this is done first since you are placing the orginal piece
+  if(current_player == 'B')
+      black_pieces ++;
+  else
+      white_pieces ++;
 
   //switch case for moves 
   //in enum up = 0 down = 1
-
   switch (temp_move.dir)
     {
 
     case 0:
       othello_field[row][column] = current_player;
-      black_pieces ++;
 
       for(int i =0; i<flip;i++)
 	{  
 	     
 	  row ++;
 	  othello_field[row][column] = current_player;
-	  black_pieces++;
-	  white_pieces--;
+          updatePieces();
 
 	}
       break;
       
     case 1:
+      othello_field[row][column] = current_player;
+
+      for(int i =0; i<flip;i++)
+        {
+
+          row --;
+          othello_field[row][column] = current_player;
+	  updatePieces();
+
+        }
+
+  
       break;
 
     case 2:
+      othello_field[row][column] = current_player;
+
+      for(int i =0; i<flip;i++)
+      {
+
+          column ++;
+          othello_field[row][column] = current_player;
+          updatePieces();
+
+      }
+
       break;
 
     case 3:
+      othello_field[row][column] = current_player;
+
+      for(int i =0; i<flip;i++)
+	{
+
+          column --;
+          othello_field[row][column] = current_player;
+          updatePieces();
+
+	}
+
       break;
 
     case 4:
@@ -568,7 +611,7 @@ void board::drawBoard()
 {
 
   cout << "*****Turn: " << turnNumber+1 << " *****" <<endl;
-  cout << "\tGo player : " <<  whosTurn()<< endl;
+  cout << "     Go player : " <<  whosTurn()<< endl;
 
   //formating
   cout << "  ";

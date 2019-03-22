@@ -36,7 +36,7 @@ class board
 
     bool checkPlacement(int,int);
     bool isFull();
-
+    void updatePieces();
     void isValidSpot(int,int,char);
     char whosTurn();
 
