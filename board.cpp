@@ -36,17 +36,16 @@ board::board()
   turnNumber =0;
 
   //test array of linked list defines an array of node pointers
-  Node* possibleMoves[20]; 
+  Node* possibleMoves[20];
 
   //initializes the array to NULL
   for(int i =0; i<20; i++)
   {
       possibleMoves[i] = NULL;
   }
+
+
 }
-
-
-
 //deconstructor
 board::~board()
 {
@@ -58,7 +57,7 @@ char board:: whosTurn()
 {
   if(turnNumber % 2 ==1)
     {
-       return 'W';
+      return 'W';
     }
   else
     {
@@ -101,8 +100,8 @@ void board::generateMoves()
 	  //is the space isnt blank then check if its the other player
 	  if (othello_field[i][j] == s_player)
 	    {
-	      // cout << "found spot " << i << " , " << j << " for: " << s_player <<endl;           
-	       isValidSpot(i,j,player);   
+	      cout << "found spot " << i << " , " << j << " for: " << s_player <<endl;           
+	      isValidSpot(i,j,player);   
 	    }       
         }
     }
@@ -111,84 +110,91 @@ void board::generateMoves()
 }
 
 
+
 void board::addMove()
 {
 }
+
+
 
 
 //checks if valid spot
 void board::isValidSpot(int row,int column, char current_player)
 {
   int flip, temp_row,temp_col;   
-     
+  
   move my_move;
-
+  
   //check up
   if(row != 0)
     {
-      if(othello_field[row -1][column] == ' '|| (othello_field[row - 1][column] >= (char)48 && othello_field[row - 1][column] <= (char)57))
+      if(othello_field[row -1][column] == ' ')
 	{
-
+	  
 	  flip =0;     
 	  temp_row = row;
-     	  temp_col= column;
-	         
-	  while( othello_field[temp_row][temp_col] != player)
+	  temp_col= column;
+	  if(temp_row != 7)
 	    {
-	      //char tester = othello_field[temp_row][temp_col];
-	      //cout << endl << endl << endl << "this is what's in the field: " << tester << endl << endl << endl;
-	      if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+	      while( othello_field[temp_row][temp_col] != player)
 		{
-		  flip = 0;
-		  break;
+		  if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+		    {
+		      flip = 0;
+		      break;
+		    }
+		  flip ++;
+		  temp_row ++;
 		}
-	      flip ++;
-	      temp_row ++;
-	    }
-         
+	    }     
 	  if(flip >0)
 	    {
-
-	      othello_field[row-1][column] = (char) (move_count+48);
-	         
+	      if(othello_field[row-1][column] == ' ')
+		{
+		  othello_field[row-1][column] = (char) (move_count+48);
+		}
 	      my_move.dir = UP;
 	      my_move.flip_count = flip;
 	      my_move.row = row -1;
-	      my_move.column = column;               
+	      my_move.column = column;
 	      
 	      possible_moves[move_count] = my_move;
 	      move_count ++;
 	    }
 	}
     }
-
+  
+  
   //check left
   if(column !=0)
     { 
-      if(othello_field[row][column-1] == ' ' || (othello_field[row][column - 1] >= (char)48 && othello_field[row][column - 1] <= (char)57))
+      if(othello_field[row][column-1] == ' ')
 	{
 	  
 	  flip =0;
 	  temp_row =row;
 	  temp_col= column;
 	  
-	  while( othello_field[temp_row][temp_col] != player)
-            {
-              if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
-                {
-                  flip = 0;
-                  break;
-                }
-	      
-	      flip ++;
-	      temp_col ++;
+	  if(temp_col != 7)
+	    {
+	      while( othello_field[temp_row][temp_col] != player)
+		{
+		  if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+		    {
+		      flip = 0;
+		      break;
+		    }
+		  
+		  flip ++;
+		  temp_col ++;
+		}
 	    }
-	  
 	  if(flip >0)
 	    {
-	      
-	      othello_field[row][column-1] = (char) (move_count+48);
-	      
+	      if(othello_field[row][column-1] == ' ')
+		{
+		  othello_field[row][column-1] = (char) (move_count+48);
+		}   
 	      my_move.dir = LEFT;
 	      my_move.flip_count = flip;
 	      my_move.row = row;
@@ -196,249 +202,258 @@ void board::isValidSpot(int row,int column, char current_player)
 	      
 	      possible_moves[move_count] = my_move;
 	      move_count ++;
-	      
 	    }
 	}
     }
   
+  
   //check down
   if(row !=7)
     {
-      if(othello_field[row+1][column] == ' ' || (othello_field[row][column + 1] >= (char)48 && othello_field[row][column + 1] <= (char)57))
+      if(othello_field[row+1][column] == ' ')
 	{
 	  
 	  flip =0;
 	  temp_row =row;
 	  temp_col= column;
-	  while( othello_field[temp_row][temp_col] != player)
-            {
-              if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
-                {
-                  flip = 0;
-                  break;
-                }
-	      
-	      flip ++;
-	      temp_row --;
+	  if(temp_row != 0)
+	    {
+	      while( othello_field[temp_row][temp_col] != player)
+		{
+		  if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+		    {
+		      flip = 0;
+		      break;
+		    }
+		  
+		  flip ++;
+		  temp_row --;
+		}
 	    }
 	  
-	if(flip >0)
-	  {
-	    
-	    othello_field[row+1][column] = (char) (move_count+48);
-            
-	    my_move.dir = DOWN;
-	    my_move.flip_count = flip;
-	    my_move.row = row +1;
-	    my_move.column = column;
-	    
-	    possible_moves[move_count] = my_move;
-	    move_count ++;
-	    
-	  }
-      }
-  }
-
-//check right
-if(column !=7)
-  {
-    if( othello_field[row][column+1] == ' ' || (othello_field[row][column + 1] >= (char)48 && othello_field[row][column + 1] <= (char)57))
-      {
+	  if(flip >0)
+	    {
+	      if(othello_field[row+1][column] == ' ')
+		{
+		  othello_field[row+1][column] = (char) (move_count+48);
+		}
+	      my_move.dir = DOWN;
+	      my_move.flip_count = flip;
+	      my_move.row = row +1;
+	      my_move.column = column;
+	      
+	      possible_moves[move_count] = my_move;
+	      move_count ++;
+	    }
+	}
+    }
+  
+  //check right
+  if(column !=7)
+    {
+      if( othello_field[row][column+1] == ' ')
+	{
+	  
+	  flip =0;
+	  temp_row =row;
+	  temp_col= column;
+	  
+	  if(temp_col != 0)
+	    {
+	      while( othello_field[temp_row][temp_col] != player)
+		{
+		  if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+		    {
+		      flip = 0;
+		      break;
+		    }
+		  
+		  flip ++;
+		  temp_col --;
+		}
+	    }
+	  if(flip >0)
+	    {
+	      if(othello_field[row][column+1] == ' ')
+		{
+		  othello_field[row][column+1] = (char) (move_count+48);
+		}	
+	      my_move.dir = RIGHT;
+	      my_move.flip_count = flip;
+	      my_move.row = row;
+	      my_move.column = column+1;
+	      
+	      possible_moves[move_count] = my_move;
+	      move_count ++;
+	    }
+	}
+    }
+  
+  //upLeft
+  if(row != 0 || column != 0)
+    {
+      if(othello_field[row -1][column - 1] == ' ')
+	{
+	  
+	  flip =0;
+	  temp_row = row;
+	  temp_col= column;
+	  if(temp_row != 7 || temp_col != 7)
+	    {
+	      while( othello_field[temp_row][temp_col] != player)
+		{
+		  if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+		    {
+		      flip = 0;
+		      break;
+		    }
+		  
+		  flip ++;
+		  temp_row++;
+		  temp_col++;
+		}
+	    }
+	  if(flip >0)
+	    {
+	      if(othello_field[row-1][column-1] == ' ')
+		{
+		  othello_field[row-1][column - 1] = (char) (move_count+48);
+		}	
+	      my_move.dir = upLeft;
+	      my_move.flip_count = flip;
+	      my_move.row = row -1;
+	      my_move.column = column - 1;
+	      
+	      possible_moves[move_count] = my_move;
+	      move_count ++;
+	    }
+	}
+    }
+  //upRight
+  if(row != 0 || column != 7)
+    {
+      if(othello_field[row -1][column + 1] == ' ')
+	{
+	  
+	  flip =0;
+	  temp_row = row;
+	  temp_col= column;
+	  
+	  if(temp_row != 7 || temp_col != 0)
+	    {
+	      while( othello_field[temp_row][temp_col] != player)
+		{
+		  if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+		    {
+		      flip = 0;
+		      break;
+		    }
+		  
+		  flip ++;
+		  temp_row++;
+		  temp_col--;
+		}
+	    }
+	  if(flip >0)
+	    {
+	      if(othello_field[row-1][column+1] == ' ')
+		{
+		  othello_field[row-1][column + 1] = (char) (move_count+48);
+		}  
+	      my_move.dir = upRight;
+	      my_move.flip_count = flip;
+	      my_move.row = row -1;
+	      my_move.column = column + 1;
+	      
+	      possible_moves[move_count] = my_move;
+	      move_count ++;
+	    }
+	}
+    }
+//downLeft
+  if(row != 7 || column != 0)
+    {
+      if(othello_field[row + 1][column - 1] == ' ')
+	{
 	
-	flip =0;
-	temp_row =row;
-	temp_col= column;
-	
-	while( othello_field[temp_row][temp_col] != player)
+	  flip =0;
+	  temp_row = row;
+	  temp_col= column;
+	  
+	if(temp_row != 0 || temp_col != 7)
 	  {
-	    if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+	    while( othello_field[temp_row][temp_col] != player)
 	      {
-		flip = 0;
-		break;
+		if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+		  {
+		    flip = 0;
+		    break;
+		  }
+		
+		flip ++;
+		temp_row--;
+		temp_col++;
 	      }
-
-	    flip ++;
-	    temp_col --;
 	  }
-	
 	if(flip >0)
 	  {
-	    
-	    othello_field[row][column+1] = (char) (move_count+48);
-	    
-	    my_move.dir = RIGHT;
+	    if(othello_field[row-1][column+1] == ' ')
+	      {
+		othello_field[row-1][column + 1] = (char) (move_count+48);
+	      }
+	    my_move.dir = downLeft;
 	    my_move.flip_count = flip;
-	    my_move.row = row;
-	    my_move.column = column+1;
+	    my_move.row = row + 1;
+	    my_move.column = column - 1;
 	    
 	    possible_moves[move_count] = my_move;
 	    move_count ++;
 	    
 	  }
-      }
-   }
-
-//upLeft
-   if(row != 0 || column != 0)
-   {
-     if(othello_field[row -1][column - 1] == ' ' || (othello_field[row - 1][column - 1] >= (char)48 && othello_field[row - 1][column - 1] <= (char)57))
-       {
-
-	 flip =0;
-	 temp_row = row;
-	 temp_col= column;
-
-	 while( othello_field[temp_row][temp_col] != player)
-	   {
-	     if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
-	       {
-		 flip = 0;
-		 break;
-	       }
-
-	     flip ++;
-	     temp_row++;
-	     temp_col++;
-	   }
-
-	 if(flip >0)
-	   {
-
-	     othello_field[row-1][column - 1] = (char) (move_count+48);
-
-	     my_move.dir = upLeft;
-	     my_move.flip_count = flip;
-	     my_move.row = row -1;
-	     my_move.column = column - 1;
-
-	     possible_moves[move_count] = my_move;
-	     move_count ++;
-
-	   }
-       }
- }
- //upRight
- if(row != 0 || column != 7)
-   {
-     if(othello_field[row -1][column + 1] == ' ' || (othello_field[row - 1][column + 1] >= (char)48 && othello_field[row - 1][column + 1] <= (char)57))
-       {
-
-         flip =0;
-         temp_row = row;
-         temp_col= column;
-
-	 while( othello_field[temp_row][temp_col] != player)
-	   {
-	     if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
-	       {
-		 flip = 0;
-		 break;
-	       }
-
-             flip ++;
-             temp_row++;
-             temp_col--;
-           }
-
-         if(flip >0)
-           {
-
-             othello_field[row-1][column + 1] = (char) (move_count+48);
-
-             my_move.dir = upRight;
-             my_move.flip_count = flip;
-             my_move.row = row -1;
-             my_move.column = column + 1;
-
-             possible_moves[move_count] = my_move;
-             move_count ++;
-
-           }
-       }
-   }
- //downLeft
- if(row != 7 || column != 0)
-   {
-     if(othello_field[row + 1][column - 1] == ' ' || (othello_field[row + 1][column - 1] >= (char)48 && othello_field[row + 1][column - 1] <= (char)57))
-       {
-
-         flip =0;
-         temp_row = row;
-         temp_col= column;
-
-	 while( othello_field[temp_row][temp_col] != player)
-	   {
-	     if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
-	       {
-		 flip = 0;
-		 break;
-	       }
-
-             flip ++;
-             temp_row--;
-             temp_col++;
-           }
-
-         if(flip >0)
-           {
-
-             othello_field[row-1][column + 1] = (char) (move_count+48);
-
-             my_move.dir = downLeft;
-             my_move.flip_count = flip;
-             my_move.row = row + 1;
-             my_move.column = column - 1;
-
-             possible_moves[move_count] = my_move;
-             move_count ++;
-
-           }
-       }
+	}
     }
 
- //downRight
- if(row != 7 || column != 7)
-   {
-     if(othello_field[row + 1][column + 1] == ' ' || (othello_field[row + 1][column + 1] >= (char)48 && othello_field[row + 1][column + 1] <= (char)57))
-       {
-
-         flip =0;
-         temp_row = row;
-         temp_col= column;
-
-
-	 while( othello_field[temp_row][temp_col] != player)
-	   {
-	     if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
-	       {
-		 flip = 0;
-		 break;
-	       }
-
-             flip ++;
-             temp_row--;
-             temp_col--;
-
-           }
-
-         if(flip >0)
-           {
-	       
-               othello_field[row+1][column + 1] = (char) (move_count+48);
-
-               my_move.dir = downRight;
-               my_move.flip_count = flip;
-               my_move.row = row +1;
-               my_move.column = column +1;
-
-               possible_moves[move_count] = my_move;
-               move_count ++;
-
-           }
-       }
-   }
-   
-
+  //downRight
+  if(row != 7 || column != 7)
+    {
+      if(othello_field[row + 1][column + 1] == ' ')
+	{
+	  
+	  flip =0;
+	  temp_row = row;
+	  temp_col= column;
+	  if(temp_row != 0 || temp_col != 0)
+	    {
+	      while( othello_field[temp_row][temp_col] != player)
+		{
+		  if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+		    {
+		      flip = 0;
+		      break;
+		    }
+		  
+		  flip ++;
+		  temp_row--;
+		  temp_col--;
+		}
+	    }
+	  if(flip >0)
+	    {
+	      if(othello_field[row+1][column+1] == ' ')
+		{
+		  othello_field[row+1][column + 1] = (char) (move_count+48);
+		}
+	      my_move.dir = downRight;
+	      my_move.flip_count = flip;
+	      my_move.row = row + 1;
+	      my_move.column = column + 1;
+	      
+	      possible_moves[move_count] = my_move;
+	      move_count ++;
+	      
+	    }
+	}
+    }
 }
 
 void board::updatePieces()
@@ -447,15 +462,15 @@ void board::updatePieces()
   char current_player =  whosTurn();
 
   if(current_player == 'W')
-  {
+    {
       white_pieces ++;
       black_pieces --;
-  }
+    }
   else
-  {
+    {
       white_pieces --;
       black_pieces ++;
-  }
+    }
 
 }
 
@@ -479,9 +494,9 @@ void board::sendMove(int choice)
 
   //this is done first since you are placing the orginal piece
   if(current_player == 'B')
-      black_pieces ++;
+    black_pieces ++;
   else
-      white_pieces ++;
+    white_pieces ++;
 
   //switch case for moves 
   //in enum up = 0 down = 1
@@ -493,7 +508,7 @@ void board::sendMove(int choice)
 
       for(int i =0; i<flip;i++)
 	{  
-	     
+	       
 	  row ++;
 	  othello_field[row][column] = current_player;
           updatePieces();
@@ -520,13 +535,13 @@ void board::sendMove(int choice)
       othello_field[row][column] = current_player;
 
       for(int i =0; i<flip;i++)
-      {
+	{
 
           column ++;
           othello_field[row][column] = current_player;
           updatePieces();
 
-      }
+	}
 
       break;
 
@@ -548,14 +563,14 @@ void board::sendMove(int choice)
       othello_field[row][column] = current_player;
 
       for(int i =0; i<flip;i++)
-      {
+	{
 
           column ++;
 	  row ++;
           othello_field[row][column] = current_player;
           updatePieces();
 
-      }
+	}
 
       break;
 
@@ -622,7 +637,7 @@ void board::sendMove(int choice)
       for(int j=0; j<8; j++)
 	{
 	  //change all the number spaces to ' ' spaces again
-	  
+	    
 
 	  //jane woke up fix this
 	  if(othello_field[i][j] == 'W')
@@ -631,11 +646,11 @@ void board::sendMove(int choice)
 	    }
 	  else if(othello_field[i][j] == 'B')
 	    {
-	      
+	            
 	    }    
 	  else
 	    othello_field[i][j] = ' ';
-	  
+	    
 	}
       
     }
