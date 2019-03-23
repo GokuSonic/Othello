@@ -54,7 +54,7 @@ class board
      char whosTurn();
 
     
-     void addMove(int, Node,move);
+     void addMove(int,move);
      void clearLinkedList();
 
 
