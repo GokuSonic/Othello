@@ -15,12 +15,32 @@ struct move
     
 };
 
+
+
+
+
+struct Node
+{
+    move aMove;
+    Node *Next;
+};
+
+
+
+
+
 class board
 {
 
     private:
     //needed for the start state of the program
     move possible_moves[70];
+
+
+    //this is the new PM array 
+    Node* possibleMoves[20];
+
+
     char othello_field[8][8];
     int move_count;
     int black_pieces;
@@ -34,16 +54,17 @@ class board
 
     //functions the user doesnt need to use
 
-    bool checkPlacement(int,int);
-    bool isFull();
-    void updatePieces();
-    void isValidSpot(int,int,char);
-    char whosTurn();
+     bool checkPlacement(int,int);
+     bool isFull();
+     void updatePieces();
+     void isValidSpot(int,int,char);
+     char whosTurn();
+     void addMove();
 
      //functions the user and agent will use
      public:
      void drawBoard();
-      void place(int,int, char);
+     void place(int,int, char);
      bool checkSpace(int,int);
      void generateMoves();
      void sendMove(int);

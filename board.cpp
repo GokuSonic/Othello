@@ -35,7 +35,18 @@ board::board()
   //set up turn number
   turnNumber =0;
 
+  //test array of linked list defines an array of node pointers
+  Node* possibleMoves[20]; 
+
+  //initializes the array to NULL
+  for(int i =0; i<20; i++)
+  {
+      possibleMoves[i] = NULL;
+  }
 }
+
+
+
 //deconstructor
 board::~board()
 {
@@ -90,8 +101,8 @@ void board::generateMoves()
 	  //is the space isnt blank then check if its the other player
 	  if (othello_field[i][j] == s_player)
 	    {
-	      cout << "found spot " << i << " , " << j << " for: " << s_player <<endl;           
-	      isValidSpot(i,j,player);   
+	      // cout << "found spot " << i << " , " << j << " for: " << s_player <<endl;           
+	       isValidSpot(i,j,player);   
 	    }       
         }
     }
@@ -100,6 +111,9 @@ void board::generateMoves()
 }
 
 
+void board::addMove()
+{
+}
 
 
 //checks if valid spot
@@ -140,8 +154,8 @@ void board::isValidSpot(int row,int column, char current_player)
 	      my_move.dir = UP;
 	      my_move.flip_count = flip;
 	      my_move.row = row -1;
-	      my_move.column = column;
-           
+	      my_move.column = column;               
+	      
 	      possible_moves[move_count] = my_move;
 	      move_count ++;
 	    }
@@ -392,6 +406,7 @@ if(column !=7)
          temp_row = row;
          temp_col= column;
 
+
 	 while( othello_field[temp_row][temp_col] != player)
 	   {
 	     if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
@@ -403,25 +418,26 @@ if(column !=7)
              flip ++;
              temp_row--;
              temp_col--;
+
            }
 
          if(flip >0)
            {
+	       
+               othello_field[row+1][column + 1] = (char) (move_count+48);
 
-             othello_field[row+1][column + 1] = (char) (move_count+48);
+               my_move.dir = downRight;
+               my_move.flip_count = flip;
+               my_move.row = row +1;
+               my_move.column = column +1;
 
-             my_move.dir = downLeft;
-             my_move.flip_count = flip;
-             my_move.row = row + 1;
-             my_move.column = column + 1;
-
-             possible_moves[move_count] = my_move;
-             move_count ++;
+               possible_moves[move_count] = my_move;
+               move_count ++;
 
            }
        }
    }
-
+   
 
 }
 
