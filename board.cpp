@@ -38,17 +38,17 @@ board::board()
   //test array of linked list defines an array of node pointers
   Node* possibleMoves[20];
 
-  //initializes the array to NULL
-  for(int i =0; i<20; i++)
-  {
-      possibleMoves[i] = NULL;
-  }
+  //initalize the linked list array
+  clearLinkedList();
 
 
 }
 //deconstructor
 board::~board()
 {
+  
+  clearLinkedList();
+
 }
 
 
@@ -111,8 +111,54 @@ void board::generateMoves()
 
 
 
-void board::addMove()
+
+void board::clearLinkedList()
 {
+     //initializes the array to NULL
+     for(int i =0; i<20; i++)
+     {
+          possibleMoves[i] = NULL;
+     }
+}
+
+
+void board::addMove(int index, Node newNode, move newMove)
+{
+
+   
+    Node *n1,*n2;
+    allocate(n1);
+    n1->aMove = newMove;
+    n1->Next =NULL;
+
+    bool samePositionFound = false;
+
+    //search array for moves that have the same row/column move
+
+    /*
+    for(int i =0; i<=index;i++)
+    {
+          for (n2 = possibleMoves[i]; n2->Next != NULL; n2=n2->Next)
+             {
+                     n2->Next = n1;
+
+             }
+
+
+        ///grab node and if same add it to that location then change found to true
+    }
+
+    //if(!samePositionFound) 
+    
+         //First node in list
+         if(possibleMoves[index] ==NULL)
+         {
+     
+            possibleMoves[index] =n1;
+         }
+         //if space is not null
+
+    */
 }
 
 
@@ -158,6 +204,8 @@ void board::isValidSpot(int row,int column, char current_player)
 	      my_move.row = row -1;
 	      my_move.column = column;
 	      
+              
+
 	      possible_moves[move_count] = my_move;
 	      move_count ++;
 	    }
