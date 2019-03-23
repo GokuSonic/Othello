@@ -16,11 +16,10 @@ int main()
     do
     {
     
-       //the players turn
-      //       cout <<"\n----Player's turn----" <<endl;
+
        myGame.generateMoves();
 
-       cout << "Choose one of the moves: " << endl;
+       cout << "Choose one of the moves: ";
        cin >> move;
 
        myGame.sendMove(move);

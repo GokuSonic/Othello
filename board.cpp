@@ -28,19 +28,6 @@ board::board()
   othello_field[4][3]= 'B';
   othello_field[4][4]= 'W';
 
-  //test board pieces this will seg fault
-  /* othello_field[0][0]= 'W';
-   othello_field[7][7]= 'W';
-   othello_field[0][7]= 'W';
-   othello_field[7][0]= 'W';
-   othello_field[0][1]= 'B';
-   othello_field[6][7]= 'B';
-   othello_field[0][6]= 'B';
-   othello_field[6][0]= 'B';
-  */
-
-
-
   //we now have 2 pieces and denote player as black and agent as white
   black_pieces = 2;
   white_pieces = 2;
@@ -55,23 +42,21 @@ board::~board()
 }
 
 
-
 //Determines who's turn it is
 char board:: whosTurn()
 {
   if(turnNumber % 2 ==1)
     {
-      return 'W';
+       return 'W';
     }
   else
     {
-    return 'B';    
+      return 'B';    
     }
 }
 
 
-
-//generate possible moves (NEEDS FLIP AMOUNT FUNCTION)
+//generate possible moves 
 void board::generateMoves()
 {
 
@@ -280,7 +265,7 @@ if(column !=7)
    }
 
 //upLeft
-/* if(row != 0 || column != 0)
+   if(row != 0 || column != 0)
    {
      if(othello_field[row -1][column - 1] == ' ' || (othello_field[row - 1][column - 1] >= (char)48 && othello_field[row - 1][column - 1] <= (char)57))
        {
@@ -318,7 +303,6 @@ if(column !=7)
 	   }
        }
  }
- /*
  //upRight
  if(row != 0 || column != 7)
    {
@@ -357,8 +341,6 @@ if(column !=7)
 
            }
        }
-     cout << "drawboard for upRight" << endl << endl;
-     drawBoard();
    }
  //downLeft
  if(row != 7 || column != 0)
@@ -398,9 +380,7 @@ if(column !=7)
 
            }
        }
-     cout << "drawboard for downLeft" << endl << endl;
-     drawBoard();
-   }
+    }
 
  //downRight
  if(row != 7 || column != 7)
@@ -428,7 +408,7 @@ if(column !=7)
          if(flip >0)
            {
 
-             othello_field[row-1][column + 1] = (char) (move_count+48);
+             othello_field[row+1][column + 1] = (char) (move_count+48);
 
              my_move.dir = downLeft;
              my_move.flip_count = flip;
@@ -440,10 +420,8 @@ if(column !=7)
 
            }
        }
-     cout << "drawboard for downRight" << endl << endl;
-     drawBoard();
    }
-*/
+
 
 }
 
@@ -551,21 +529,70 @@ void board::sendMove(int choice)
       break;
 
     case 4:
+      othello_field[row][column] = current_player;
+
+      for(int i =0; i<flip;i++)
+      {
+
+          column ++;
+	  row ++;
+          othello_field[row][column] = current_player;
+          updatePieces();
+
+      }
+
       break;
 
     case 5:
+      othello_field[row][column] = current_player;
+
+      for(int i =0; i<flip;i++)
+	{
+
+          column --;
+          row ++;
+          othello_field[row][column] = current_player;
+          updatePieces();
+
+	}
+
+
       break;
 
     case 6:
+      othello_field[row][column] = current_player;
+
+      for(int i =0; i<flip;i++)
+	{
+
+          column ++;
+          row --;
+          othello_field[row][column] = current_player;
+          updatePieces();
+
+	}
+
       break;
 
     case 7:
+      othello_field[row][column] = current_player;
+
+      for(int i =0; i<flip;i++)
+	{
+
+          column --;
+          row --;
+          othello_field[row][column] = current_player;
+          updatePieces();
+
+	}
+
       break;
 
-    case 8:
-      break;
-
+   
     default:
+
+      cout << "No MOVES chosen" << endl;
       break;
 
     }
@@ -599,8 +626,6 @@ void board::sendMove(int choice)
     
   //Increase the turn number 
   turnNumber++;
-
-  drawBoard();
 
 }
 
