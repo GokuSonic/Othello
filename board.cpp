@@ -127,7 +127,7 @@ void board::addMove(int index, Node newNode, move newMove)
 
    
     Node *n1,*n2;
-    allocate(n1);
+    //    allocate(n1);
     n1->aMove = newMove;
     n1->Next =NULL;
 
