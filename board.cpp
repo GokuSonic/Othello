@@ -1,37 +1,38 @@
-/* implementation file*/
+//* implementation file*/
 
 #include "board.h"
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
 
+
 //constructor
 board::board()
 {
 
-  move_count = 0;
+  move_count =0;
 
   //inital state of the board
-  for(int i = 0; i < 8; i++)
+  for(int i =0; i <8; i++)
     {
-      for(int j = 0; j < 8; j++)
+      for(int j=0; j<8; j++)
 	{
 	  othello_field[i][j] = ' ';
 	}
     }
 
   //starting 4 pieces
-  othello_field[3][3] = 'W';
-  othello_field[3][4] = 'B';
-  othello_field[4][3] = 'B';
-  othello_field[4][4] = 'W';
+  othello_field[3][3]= 'W';
+  othello_field[3][4]= 'B';
+  othello_field[4][3]= 'B';
+  othello_field[4][4]= 'W';
 
   //we now have 2 pieces and denote player as black and agent as white
   black_pieces = 2;
   white_pieces = 2;
    
   //set up turn number
-  turnNumber = 0;
+  turnNumber =0;
 
   //test array of linked list defines an array of node pointers
   Node* possibleMoves[20];
@@ -53,7 +54,7 @@ board::~board()
 //Determines who's turn it is
 char board:: whosTurn()
 {
-  if(turnNumber % 2 == 1)
+  if(turnNumber % 2 ==1)
     {
       return 'W';
     }
@@ -75,7 +76,7 @@ void board::generateMoves()
       possible_moves[i] = my_move;      
  
     }
-  move_count = 0;
+  move_count =0;
 
   //gets the current player
   player =  whosTurn();
@@ -89,21 +90,19 @@ void board::generateMoves()
     s_player = 'W';
   
 
- 
-  //search the board for possible moves from top left to bottom right 
-  for(int i = 0; i < 8; i++)
+    //search the board for possible moves for current player from top left to bottom right 
+    for(int i =0; i < 8; i++)
     {
-      for(int j = 0; j < 8; j++)
+        for(int j=0; j < 8; j++)
         {
-	  //if the space isnt blank then check if its the other player
-	  if (othello_field[i][j] == s_player)
+	    //is the space isnt blank then check if its the other player
+	    if (othello_field[i][j] == s_player)
 	    {
-	      //cout << "found spot " << i << " , " << j << " for: " << s_player <<endl;           
-	      isValidSpot(i,j,player);   
+	      // cout << "found spot " << i << " , " << j << " for: " << s_player <<endl;           
+	        isValidSpot(i,j,player);   
 	    }       
         }
     }
-
   drawBoard();
 }
 
@@ -113,7 +112,7 @@ void board::generateMoves()
 void board::clearLinkedList()
 {
   //initializes the array to NULL
-  for(int i = 0; i < 20; i++)
+  for(int i =0; i<20; i++)
     {
       possibleMoves[i] = NULL;
     }
@@ -123,7 +122,7 @@ void board::clearLinkedList()
 void board::addMove(int index, move newMove)
 {
 
-
+  //cout << "----------------ADD MOVE" << endl;
   Node  *n1 = new Node;
   Node  *n2 = new Node;
   n1->aMove = newMove;
@@ -131,18 +130,40 @@ void board::addMove(int index, move newMove)
 
   bool samePositionFound = false;
 
-  //search array for moves that have the same row/column move        
-  for(int i =0; i<index-1;i++)
+    //search array for moves that have the same row/column move        
+    for(int i =0; i<index;i++)
     {         
-      cout << "index= " << i <<endl;
-      n2 = possibleMoves[i];
+      // cout << "index= " << i <<endl;
+        n2 = possibleMoves[i];
 
-      //make sure the poisition isnt null first
-      if(n2 != NULL)
+        //make sure the poisition isnt null first
+        if(n2 != NULL)
 	{  
-	  for (n2 = possibleMoves[i]; n2->Next != NULL && !samePositionFound; n2=n2->Next)
+
+	    //if first node in linked list
+	    if(n2->Next == NULL)
+	    { 
+
+	        move temp_move = n2->aMove;
+		//        cout << "\tnode search " << "\n\ttemp move row= " << temp_move.row  << " col= " << temp_move.column << endl;
+	        //        cout << "\tmove row = " << newMove.row << " column = " << newMove.column << endl;
+	        if(temp_move.row == newMove.row && temp_move.column == newMove.column)
+	        {
+		    //cout << "\nfound\n" <<endl;
+		    samePositionFound = true;
+		    n2->Next = n1;
+	        }
+	    }
+            else
 	    {
-	         
+
+	        cout<< "there are multiple moves in this tern " << endl;
+	    } 
+
+	    /*
+	   for (n2 = possibleMoves[i]; n2->Next != NULL && !samePositionFound; n2=n2->Next)
+	  {
+	      
 	      move temp_move = n2->aMove;
 	      cout << "node search " << "\n temp move row= " << temp_move.row  << " col= " << temp_move.column << endl;
 	      cout << "move row = " << newMove.row << " column = " << newMove.column << endl;
@@ -152,10 +173,10 @@ void board::addMove(int index, move newMove)
 		  samePositionFound = true;       
 		  n2->Next = n1;
 		}
-	    }
-	}
+		}*/
+	 }
 
-      //Add the new loaction if cant find a match
+    //Add the new loaction if cant find a match
     }
   if(!samePositionFound)
     {   
@@ -165,10 +186,10 @@ void board::addMove(int index, move newMove)
 	  possibleMoves[index] =n1;
 	}
     }   
-
-
+  
+  /*
   //see whats in the linked list debugging only
-  /*  for(int i =0; i<=index;i++)
+  for(int i =0; i<=index;i++)
     {
       cout << "index= " <<  i  <<endl;
       n2 = possibleMoves[i];
@@ -177,437 +198,452 @@ void board::addMove(int index, move newMove)
       cout << "row= " << temp.row << " col= " << temp.column;
       cout << "\n\t dir = " << temp.dir << endl;
  
-      }*/
-  
+    }
+  */
+
+  //cout<< "--------------------leaving function" << endl;
+
 }
+
+
 
 
 //checks if valid spot
 void board::isValidSpot(int row,int column, char current_player)
 {
   int flip, temp_row,temp_col;   
-  
+
+  char tempChar = ' ';
   move my_move;
   
   //check up
-  //if row == 0, the code will segfault trying to look up.
   if(row != 0)
     {
-      //checks up to see if it's empty
-      if(othello_field[row -1][column] == ' ')
-	{
-	  flip = 0;     
-	  temp_row = row;
-	  temp_col= column;
-	  //we need to make sure the while loop doesn't try to check down if row == 7 or the code will segfault.
-	  if(temp_row != 7)
-	    {
-	      //checks down while the current place isn't player piece
-	      while(othello_field[temp_row][temp_col] != player)
-		{
-		  //if the character isn't a blank or a player choice
-		  if(othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char) 48 && othello_field[temp_row][temp_col] <= (char) 57) || (othello_field[temp_row][temp_col] >= (char) 97 && othello_field[temp_row][temp_col] <= (char) 122))
-		    {
-		      //we don't want the program to consider searching more
-		      flip = 0;
-		      break;
-		    }
-		  flip++;
-		  temp_row++;
-		}
-	    }     
-	  //this is accessed if there are any potential moves, and sets it in our struct array4
-	  if(flip > 0)
-	    {
-	      //check to make sure it's an empty space. if it isn't, we don't want to replace the current choice.
-	      if(othello_field[row-1][column] == ' ')
-	      {
-	      //if move count is over 10 (0-9), we change move count to start at lower case alphabet
-	      if((move_count + 48) >= 58)
-		{
-		  othello_field[row - 1][column] = (char) (move_count + 87);
-		}
-	      //if move count is 0-9, add 48 to ascii value
-	      else
-		{
-		  othello_field[row - 1][column] = (char) (move_count + 48);
-		}
-	      }
-	      //set everything for stuct
-	      my_move.dir = UP;
-	      my_move.flip_count = flip;
-	      my_move.row = row - 1;
-	      my_move.column = column;
-	            
-	      addMove(move_count, my_move);
-	      cout << "\tup\tRow = " << row << "column = " << column << endl;
+      //      if(othello_field[row -1][column] == ' ')
+      //{
+        
+      flip =0;     
+      temp_row = row;
+      temp_col= column;
 
-	      possible_moves[move_count] = my_move;
-	      move_count++;
+      if(temp_row != 7)
+	{
+	  while( othello_field[temp_row][temp_col] != player)
+	    {
+	      if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57) 
+                   || (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
+		{
+		  flip = 0;
+		  break;
+		}
+	      flip ++;
+	      temp_row ++;
+	    }
+	}     
+      if(flip >0)
+	{
+	  if(othello_field[row-1][column] == ' ')
+	  {
+            
+            decToChar( move_count,tempChar);
+            
+            othello_field[row-1][column] = tempChar;
+
+	  }
+	  my_move.dir = UP;
+	  my_move.flip_count = flip;
+	  my_move.row = row -1;
+	  my_move.column = column;
+	        
+	  addMove(move_count,my_move);
+	      
+	  move_count ++;
+	  cout << "\tup\tRow = " << row-1 << " column = " << column  << "  move = " << move_count -1<< endl;
+	  // drawBoard();
+	  //cin >> flip; 	  
+	}
+      //}
+    }
+
+  
+  //check left
+  if(column !=0)
+    { 
+      // if(othello_field[row][column-1] == ' ')
+      //{
+        
+      flip =0;
+      temp_row =row;
+      temp_col= column;
+        
+      if(temp_col != 7)
+	{
+	  while( othello_field[temp_row][temp_col] != player)
+	    {
+	      if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57)
+		   || (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
+
+		{
+		  flip = 0;
+		  break;
+		}
+	        
+	      flip ++;
+	      temp_col ++;
 	    }
 	}
+      if(flip >0)
+	{
+	  if(othello_field[row][column-1] == ' ')
+	  {
+
+            decToChar( move_count,tempChar);
+	    othello_field[row][column-1] =  tempChar;
+
+
+	  }   
+	  my_move.dir = LEFT;
+	  my_move.flip_count = flip;
+	  my_move.row = row;
+	  my_move.column = column-1;
+	        
+	  addMove(move_count,my_move);
+
+          move_count ++;
+	  cout << "\tleft\tRow = " << row << " column = " << column-1 <<  "  move = " << move_count-1 << endl;
+
+	  
+	  //	  drawBoard();
+	  //cin >> flip; 	  
+	}
+      //}
     }
+  
+  
+  //check down
+  if(row !=7)
+    {
+      // if(othello_field[row+1][column] == ' ')
+      //{
+        
+      flip =0;
+      temp_row =row;
+      temp_col= column;
+      if(temp_row != 0)
+	{
+	  while( othello_field[temp_row][temp_col] != player)
+	    {
+	      if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57)
+		   || (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
+
+		{
+		  flip = 0;
+		  break;
+		}
+	        
+	      flip ++;
+	      temp_row --;
+	    }
+	}
+        
+      if(flip >0)
+	{
+	  if(othello_field[row+1][column] == ' ')
+	  {
+            
+                       decToChar( move_count,tempChar);
+		       othello_field[row+1][column] =  tempChar;
+
+	  }
+	  my_move.dir = DOWN;
+	  my_move.flip_count = flip;
+	  my_move.row = row +1;
+	  my_move.column = column;
+	        
+	  addMove(move_count,my_move);
+
+          move_count ++;
+	  cout << "\tdown\tRow = " << row+1  << " column = " << column <<   "  move = " << move_count-1 <<  endl;
+	  
+	  // drawBoard();
+	  ///cin >> flip; 	  
+	}
+      //}
+    }
+  
+
+
+  //check right
+  if(column !=7)
+    {
+      // if( othello_field[row][column+1] == ' ')
+      //{
+        
+      flip =0;
+      temp_row =row;
+      temp_col= column;
+        
+      if(temp_col != 0)
+	{
+	  while( othello_field[temp_row][temp_col] != player)
+	    {
+	      if(  othello_field[temp_row][temp_col] == ' '  || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57)
+		|| (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
+	
+               {
+		  flip = 0;
+		  break;
+		}
+	        
+	      flip ++;
+	      temp_col --;
+	    }
+	}
+      if(flip >0)
+	{
+	  if(othello_field[row][column+1] == ' ')
+	  {
+           
+            decToChar( move_count,tempChar);
+	    othello_field[row][column+1] = tempChar;
+
+
+	  }
+	  my_move.dir = RIGHT;
+	  my_move.flip_count = flip;
+	  my_move.row = row;
+	  my_move.column = column+1;
+
+	  addMove(move_count,my_move);
+              
+          move_count ++;
+	  cout << "\tright\tRow = " << row << " column = " << column+1 <<  "  move = " << move_count-1 <<  endl;
+      
+	  // drawBoard();
+	  //cin >> flip; 	  
+	}
+      //}
+    }
+  
+
+
+
+  //upLeft
+  if(row != 0 || column != 0)
+    {
+      //   if(othello_field[row -1][column - 1] == ' ')
+      //{
+        
+      flip =0;
+      temp_row = row;
+      temp_col= column;
+      if(temp_row != 7 || temp_col != 7)
+	{
+	  while( othello_field[temp_row][temp_col] != player)
+	    {
+	      if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57)
+		|| (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
+
+	       	{
+		  flip = 0;
+		  break;
+		}
+	        
+	      flip ++;
+	      temp_row++;
+	      temp_col++;
+	    }
+	}
+      if(flip >0)
+	{
+	   if(othello_field[row-1][column-1] == ' ')
+	   {
+                     decToChar( move_count,tempChar);
+		     othello_field[row-1][column - 1] =  tempChar;
+
+	    }
+	  my_move.dir = upLeft;
+	  my_move.flip_count = flip;
+	  my_move.row = row -1;
+	  my_move.column = column - 1;
+	        
+	  addMove(move_count,my_move);
+
+          move_count ++;
+          cout << "\tupLeft\tRow = " << row-1 << " column = " << column-1 << "  move = " << move_count-1 << endl;
+	  //drawBoard();
+	  //cin >> flip; 	  
+	}
+      //}
+    }
+
+
+
 
   //upRight
   if(row != 0 || column != 7)
     {
-      if(othello_field[row - 1][column + 1] == ' ')
-        {
-
-          flip = 0;
-          temp_row = row;
-          temp_col = column;
-
-          if(temp_row != 7 || temp_col != 0)
-            {
-              while(othello_field[temp_row][temp_col] != player)
-                {
-                  if(othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char) 48 && othello_field[temp_row][temp_col] <= (char) 57) || (othello_field[temp_row][temp_col] >= (char) 97 && othello_field[temp_row][temp_col] <= (char) 122))
-                    {
-                      flip = 0;
-                      break;
-                    }
-
-                  flip++;
-                  temp_row++;
-                  temp_col--;
-                }
-            }
-          if(flip > 0)
-            {
-              if(othello_field[row - 1][column + 1] == ' ')
-                {
-	      if((move_count + 48) >= 58)
-		{
-		  othello_field[row - 1][column + 1] = (char) (move_count + 87);
-		}
-	      else
-		{
-		  othello_field[row-1][column + 1] = (char) (move_count + 48);
-		}
-	        }
-              my_move.dir = upRight;
-              my_move.flip_count = flip;
-              my_move.row = row - 1;
-              my_move.column = column + 1;
-
-              addMove(move_count,my_move);
-              cout << "\tupRight\tRow = " << row << " column = " << column << endl;
-
-              possible_moves[move_count] = my_move;
-              move_count++;
-            }
-        }
-    }
-
-  //check right
-  if(column != 7)
-    {
-      if( othello_field[row][column+1] == ' ')
-        {
-
-          flip = 0;
-          temp_row = row;
-          temp_col = column;
-
-          if(temp_col != 0)
-            {
-              while(othello_field[temp_row][temp_col] != player)
-                {
-                  if(othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57) || (othello_field[temp_row][temp_col] >= (char) 97 && othello_field[temp_row][temp_col] <= (char) 122))
-                    {
-                      flip = 0;
-                      break;
-                    }
-
-                  flip++;
-                  temp_col--;
-                }
-            }
-          if(flip >0)
-            {
-              if(othello_field[row][column + 1] == ' ')
-                {
-	      if((move_count+48) >= 58)
-		{
-		  othello_field[row][column + 1] = (char) (move_count + 87);
-		}
-	      else
-		{
-		  othello_field[row][column + 1] = (char) (move_count + 48);
-		}
-	        }
-              my_move.dir = RIGHT;
-              my_move.flip_count = flip;
-              my_move.row = row;
-              my_move.column = column + 1;
-
-              addMove(move_count,my_move);
-              cout << "\tRight\tRow = " << row << " column = " << column << endl;
-
-              possible_moves[move_count] = my_move;
-              move_count++;
-            }
-        }
-    }  
-  //downRight
-  if(row != 7 || column != 7)
-    {
-      if(othello_field[row + 1][column + 1] == ' ')
-        {
-
-          flip = 0;
-          temp_row = row;
-          temp_col= column;
-          if(temp_row != 0 || temp_col != 0)
-            {
-              while(othello_field[temp_row][temp_col] != player)
-                {
-                  if(othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char) 48 && othello_field[temp_row][temp_col] <= (char) 57) || (othello_field[temp_row][temp_col] >= (char) 97 && othello_field[temp_row][temp_col] <= (char) 122))
-                    {
-                      flip = 0;
-                      break;
-                    }
-
-                  flip++;
-                  temp_row--;
-                  temp_col--;
-                }
-            }
-          if(flip > 0)
-            {
-              if(othello_field[row + 1][column + 1] == ' ')
-                {
-	      if((move_count + 48) >= 58)
-		{
-		  othello_field[row + 1][column + 1] = (char) (move_count + 87);
-		}
-	      else
-		{
-		  othello_field[row + 1][column + 1] = (char) (move_count + 48);
-		}
-	        }
-              my_move.dir = downRight;
-              my_move.flip_count = flip;
-              my_move.row = row + 1;
-              my_move.column = column + 1;
-
-              addMove(move_count,my_move);
-              cout << "\tdownRight\tRow = " << row << " column = " << column << endl;
-
-              possible_moves[move_count] = my_move;
-              move_count++;
-
-            }
-        }
-    }
-  //check down
-  if(row != 7)
-    {
-      if(othello_field[row + 1][column] == ' ')
-        {
-
-          flip = 0;
-	  temp_row = row;
-	  temp_col = column;
-	  if(temp_row != 0)
+      //   if(othello_field[row -1][column + 1] == ' ')
+      //{
+        
+      flip =0;
+      temp_row = row;
+      temp_col= column;
+        
+      if(temp_row != 7 || temp_col != 0)
+	{
+	  while( othello_field[temp_row][temp_col] != player)
 	    {
-	      while(othello_field[temp_row][temp_col] != player)
+	      if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57)
+		   || (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
+
 		{
-		  if(othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char) 48 && othello_field[temp_row][temp_col] <= (char) 57) || (othello_field[temp_row][temp_col] >= (char) 97 && othello_field[temp_row][temp_col] <= (char) 122))
-		    {
-		      flip = 0;
-		      break;
-		    }
-		    
-		  flip++;
-		  temp_row--;
+		  flip = 0;
+		  break;
 		}
-	    }
-	    
-	  if(flip > 0)
-	    {
-	      if(othello_field[row + 1][column] == ' ')
-	        {
-	      if((move_count + 48) >= 58)
-		{
-		  othello_field[row + 1][column] = (char) (move_count + 87);
-		}
-	      else
-		{
-		  othello_field[row + 1][column] = (char) (move_count + 48);
-		}
-	        }
-	      my_move.dir = DOWN;
-	      my_move.flip_count = flip;
-	      my_move.row = row + 1;
-	      my_move.column = column;
-	            
-	      addMove(move_count,my_move);
-	      cout << "\tDown\tRow = " << row << " column = " << column << endl;
-	            
-	      possible_moves[move_count] = my_move;
-	      move_count++;
+	        
+	      flip ++;
+	      temp_row++;
+	      temp_col--;
 	    }
 	}
-    }  
+      if(flip >0)
+	{
+	   if(othello_field[row-1][column+1] == ' ')
+	   {
+
+            decToChar( move_count,tempChar);
+	    othello_field[row-1][column + 1] = tempChar;
+	   }  
+	  my_move.dir = upRight;
+	  my_move.flip_count = flip;
+	  my_move.row = row -1;
+	  my_move.column = column + 1;
+
+
+	  addMove(move_count,my_move);
+
+          move_count++;
+          cout << "\tupright\tRow = " << row-1 << " column = " << column+1 << "  move = " << move_count-1 <<  endl;
+	  // drawBoard();
+	  //cin >> flip; 	  
+	        
+      	}
+      //}
+    }
+
+
+
   //downLeft
   if(row != 7 || column != 0)
     {
-      if(othello_field[row + 1][column - 1] == ' ')
-        {
-
-          flip = 0;
-          temp_row = row;
-          temp_col= column;
-
-          if(temp_row != 0 || temp_col != 7)
-            {
-              while(othello_field[temp_row][temp_col] != player)
-                {
-                  if(othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char) 48 && othello_field[temp_row][temp_col] <= (char) 57) || (othello_field[temp_row][temp_col] >= (char) 97 && othello_field[temp_row][temp_col] <= (char) 122))
-                    {
-                      flip = 0;
-                      break;
-                    }
-
-                  flip++;
-                  temp_row--;
-                  temp_col++;
-                }
-            }
-          if(flip > 0)
-            {
-              if(othello_field[row - 1][column + 1] == ' ')
-                {
-	      if((move_count + 48) >= 58)
-		{
-		  othello_field[row - 1][column + 1] = (char) (move_count + 87);
-		}
-	      else
-		{
-		  othello_field[row - 1][column + 1] = (char) (move_count + 48);
-		}
-	        }
-              my_move.dir = downLeft;
-              my_move.flip_count = flip;
-              my_move.row = row + 1;
-              my_move.column = column - 1;
-
-              addMove(move_count,my_move);
-              cout << "\tdownLeft\tRow = " << row << " column = " << column << endl;
-
-              possible_moves[move_count] = my_move;
-              move_count++;
-
-            }
-        }
-    }
-
-  //check left
-  if(column !=0)
-    { 
-      if(othello_field[row][column - 1] == ' ')
+      //   if(othello_field[row + 1][column - 1] == ' ')
+      //{
+      
+      flip =0;
+      temp_row = row;
+      temp_col= column;
+        
+      if(temp_row != 0 || temp_col != 7)
 	{
-	      
-	  flip = 0;
-	  temp_row = row;
-	  temp_col = column;
-	      
-	  if(temp_col != 7)
+	  while( othello_field[temp_row][temp_col] != player)
 	    {
-	      while(othello_field[temp_row][temp_col] != player)
+	      if(  othello_field[temp_row][temp_col] == ' '|| (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57)
+		   || (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
+
 		{
-		  if(othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char) 48 && othello_field[temp_row][temp_col] <= (char) 57) || (othello_field[temp_row][temp_col] >= (char) 97 && othello_field[temp_row][temp_col] <= (char) 122))
-		    {
-		      flip = 0;
-		      break;
-		    }
-		      
-		  flip++;
-		  temp_col++;
+		  flip = 0;
+		  break;
 		}
-	    }
-	  if(flip > 0)
-	    {
-	      if(othello_field[row][column - 1] == ' ')
-	        {
-	      if((move_count + 48) >= 58)
-		{
-		  othello_field[row][column - 1] = (char) (move_count + 87);
-		}
-	      else
-		{
-		  othello_field[row][column - 1] = (char) (move_count + 48);
-		}   
-	        }
-	      my_move.dir = LEFT;
-	      my_move.flip_count = flip;
-	      my_move.row = row;
-	      my_move.column = column - 1;
-	                  
-	      addMove(move_count,my_move);
-	      cout << "\tLeft\tRow = " << row << " column = " << column << endl;
-	            
-	      possible_moves[move_count] = my_move;
-	      move_count++;
+	      
+	      flip ++;
+	      temp_row--;
+	      temp_col++;
 	    }
 	}
+      if(flip >0)
+	{
+	  if(othello_field[row+1][column-1] == ' ')
+	  {
+	   
+            decToChar( move_count,tempChar);
+	    othello_field[row+1][column - 1] =  tempChar;
+
+	  }
+
+
+	  my_move.dir = downLeft;
+	  my_move.flip_count = flip;
+	  my_move.row = row + 1;
+	  my_move.column = column - 1;
+
+
+	  addMove(move_count,my_move);
+          move_count ++;	  
+	  cout << "\tdownLeft\tRow = " << row+1 << " column = " << column-1 <<  "  move = " << move_count-1 << endl;
+
+	  // drawBoard();
+	  //cin >> flip; 	      
+	}
+      //}
     }
-    
-  //upLeft
-  if(row != 0 || column != 0)
+
+
+
+  //downRight
+  if(row != 7 || column != 7)
     {
-      if(othello_field[row -1][column - 1] == ' ')
+      // if(othello_field[row + 1][column + 1] == ' ')
+      //{
+        
+      flip =0;
+      temp_row = row;
+      temp_col= column;
+      if(temp_row != 0 || temp_col != 0)
 	{
-	      
-	  flip =0;
-	  temp_row = row;
-	  temp_col= column;
-	  if(temp_row != 7 || temp_col != 7)
+	  while( othello_field[temp_row][temp_col] != player)
 	    {
-	      while(othello_field[temp_row][temp_col] != player)
+	      if(  othello_field[temp_row][temp_col] == ' '|| (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57)
+		   || (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
+
 		{
-		  if(othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char) 48 && othello_field[temp_row][temp_col] <= (char) 57) || (othello_field[temp_row][temp_col] >= (char) 97 && othello_field[temp_row][temp_col] <= (char) 122))
-		    {
-		      flip = 0;
-		      break;
-		    }
-		      
-		  flip++;
-		  temp_row++;
-		  temp_col++;
+		  flip = 0;
+		  break;
 		}
-	    }
-	  if(flip > 0)
-	    {
-	      if(othello_field[row - 1][column - 1] == ' ')
-	        {
-	      if((move_count + 48) >= 58)
-		{
-		  othello_field[row - 1][column - 1] = (char) (move_count + 87);
-		}
-	      else
-		{
-		  othello_field[row - 1][column - 1] = (char) (move_count + 48);
-		}
-	        }
-	      my_move.dir = upLeft;
-	      my_move.flip_count = flip;
-	      my_move.row = row - 1;
-	      my_move.column = column - 1;
-	                  
-	      addMove(move_count,my_move);
-	      cout << "\tupleft\tRow = " << row << " column = " << column << endl;
-	            
-	      possible_moves[move_count] = my_move;
-	      move_count++;
+	        
+	      flip ++;
+	      temp_row--;
+	      temp_col--;
 	    }
 	}
+      if(flip >0)
+	{
+	  if(othello_field[row+1][column+1] == ' ')
+	   {
+
+                         decToChar( move_count,tempChar);
+			 othello_field[row+1][column + 1] =  tempChar;
+
+	   }
+
+	  my_move.dir = downRight;
+	  my_move.flip_count = flip;
+	  my_move.row = row + 1;
+	  my_move.column = column + 1;
+
+	  addMove(move_count,my_move);
+	        
+          move_count ++;
+	  cout << "\tdownright\tRow = " << row+1 << " column = " << column+1 <<  "  move = " << move_count-1  <<  endl;
+          // drawBoard();
+	  //cin >> flip; 	  
+	}
+      //}
     }
+
+  
 }
 
-//function used to count pieces of players
 void board::updatePieces()
 {
 
@@ -615,14 +651,63 @@ void board::updatePieces()
 
   if(current_player == 'W')
     {
-      white_pieces++;
-      black_pieces--;
+      white_pieces ++;
+      black_pieces --;
     }
   else
     {
-      white_pieces--;
-      black_pieces++;
+      white_pieces --;
+      black_pieces ++;
     }
+
+}
+
+
+
+//takes the move count and converts it to its ascii value 
+void board::decToChar(int position, char& tempChar)
+{
+ 
+  cout << "in Function decToChar = " << position << ", " << tempChar << endl;
+
+  //if the position is from 0-9 then add 48
+  if(position <=9 && position >= 0)
+  {
+     tempChar = ((char) (position+48));
+     cout << "\tin FUNC new char " << tempChar << endl;
+     
+  }
+  //now use lowercase numbers
+  else  if(position >=10)
+  {
+    tempChar = ((char) (position+87));
+    cout << "\tIN FUNC  new char == " << tempChar << endl;
+
+  }
+
+
+}
+
+
+
+//this converts the char to a proper decimal poisition in the array
+int board::charConvert(char choice)
+{
+     int typeCasted = (int)choice;
+    
+
+     
+     //if from 0-9 return 48-their ascii value
+     if(typeCasted >= 48 && typeCasted <=57)
+          return  typeCasted-48; 
+  
+     //if from a-z then return typecast -87 which gives 10+
+     if(typeCasted >= 97 && typeCasted <=122)
+       return typeCasted - 87;
+   
+    
+     //user messed up seg faults 
+     return -1;
 
 }
 
@@ -632,154 +717,203 @@ void board::updatePieces()
 //updates black and white pieces
 //update move count
 
-void board::sendMove(int choice)
+void board::sendMove(char user_choice)
 {
 
+  cout << "for : " << user_choice << "convert--- ";
+  int choice =charConvert(user_choice);
+  cout << choice;
 
-  move temp_move = possible_moves[choice];
-  int flip = temp_move.flip_count;
-  int row = temp_move.row;
-  int column = temp_move.column;
+
+
+  Node  *n1 = new Node;
+
+  n1 =  possibleMoves[choice];
+
+  do
+  {
+
+       cout <<"\t\tSEND move " <<endl;
+
+       //gets the move from the linked list
+       
+       move temp_move = n1->aMove;
+ 
+       int flip = temp_move.flip_count;
+       int row = temp_move.row;
+       int column = temp_move.column;
   
 
-  char current_player =  whosTurn();
+       char current_player =  whosTurn();
 
-  //this is done first since you are placing the orginal piece
-  if(current_player == 'B')
-    black_pieces++;
-  else
-    white_pieces++;
 
-  //switch case for moves 
-  //in enum up = 0 down = 1
-  switch (temp_move.dir)
-    {
 
-    case 0:
-      othello_field[row][column] = current_player;
+       //this is done first since you are placing the orginal piece
+       if(current_player == 'B')
+          black_pieces ++;
+       else
+         white_pieces ++;
 
-      for(int i = 0; i < flip; i++)
-	{  
-	  row++;
-	  othello_field[row][column] = current_player;
-          updatePieces();
-	}
-      break;
-      
-    case 1:
-      othello_field[row][column] = current_player;
+       //switch case for moves
+       //in enum up = 0 down = 1
+       switch (temp_move.dir)
+	 {
 
-      for(int i = 0; i < flip; i++)
-        {
-	  row--;
-          othello_field[row][column] = current_player;
-	  updatePieces();
-        }
-      break;
+	 case 0:
+	   othello_field[row][column] = current_player;
+	   for(int i =0; i<flip;i++)
+	     {
 
-    case 2:
-      othello_field[row][column] = current_player;
+	       row ++;
+	       othello_field[row][column] = current_player;
+	       updatePieces();
 
-      for(int i = 0; i < flip; i++)
-	{
-          column++;
-          othello_field[row][column] = current_player;
-          updatePieces();
-	}
-      break;
+	     }
+	   break;
 
-    case 3:
-      othello_field[row][column] = current_player;
+	 case 1:
+	   othello_field[row][column] = current_player;
 
-      for(int i = 0; i < flip; i++)
-	{
-          column--;
-          othello_field[row][column] = current_player;
-          updatePieces();
-	}
-      break;
+	   for(int i =0; i<flip;i++)
+	     {
 
-    case 4:
-      othello_field[row][column] = current_player;
+	       row --;
+	       othello_field[row][column] = current_player;
+	       updatePieces();
 
-      for(int i = 0; i < flip; i++)
-	{
-          column++;
-	  row++;
-          othello_field[row][column] = current_player;
-          updatePieces();
-	}
-      break;
+	     }
 
-    case 5:
-      othello_field[row][column] = current_player;
 
-      for(int i = 0; i < flip; i++)
-	{
-          column--;
-          row++;
-          othello_field[row][column] = current_player;
-          updatePieces();
-	}
-      break;
+	   break;
 
-    case 6:
-      othello_field[row][column] = current_player;
+	 case 2:
+	   othello_field[row][column] = current_player;
 
-      for(int i = 0; i < flip; i++)
-	{
-          column++;
-          row--;
-          othello_field[row][column] = current_player;
-          updatePieces();
-	}
-      break;
+	   for(int i =0; i<flip;i++)
+	     {
 
-    case 7:
-      othello_field[row][column] = current_player;
+	       column ++;
+	       othello_field[row][column] = current_player;
+	       updatePieces();
 
-      for(int i = 0; i < flip; i++)
-	{
-          column--;
-          row--;
-          othello_field[row][column] = current_player;
-          updatePieces();
-	}
-      break;
-   
-    default:
-      cout << "No MOVES chosen" << endl;
-      break;
-    }
+	     }
+
+	   break;
+
+	 case 3:
+	   othello_field[row][column] = current_player;
+
+	   for(int i =0; i<flip;i++)
+	     {
+
+	       column --;
+	       othello_field[row][column] = current_player;
+	       updatePieces();
+
+	     }
+
+	   break;
+
+	 case 4:
+	   othello_field[row][column] = current_player;
+
+	   for(int i =0; i<flip;i++)
+	     {
+
+	       column ++;
+	       row ++;
+	       othello_field[row][column] = current_player;
+	       updatePieces();
+
+	     }
+
+	   break;
+
+	 case 5:
+	   othello_field[row][column] = current_player;
+
+	   for(int i =0; i<flip;i++)
+	     {
+
+	       column --;
+	       row ++;
+	       othello_field[row][column] = current_player;
+	       updatePieces();
+
+	     }
+
+
+	   break;
+
+	 case 6:
+	   othello_field[row][column] = current_player;
+
+	   for(int i =0; i<flip;i++)
+	     {
+
+	       column ++;
+	       row --;
+	       othello_field[row][column] = current_player;
+	       updatePieces();
+
+	     }
+
+	   break;
+
+	 case 7:
+	   othello_field[row][column] = current_player;
+
+	   for(int i =0; i<flip;i++)
+	     {
+
+	       column --;
+	       row --;
+	       othello_field[row][column] = current_player;
+	       updatePieces();
+
+	     }
+
+	   break;
+
+
+	 default:
+
+	   cout << "No MOVES chosen" << endl;
+	   break;
+
+	 }
+
+       n1 = n1->Next;
+  }while(n1 !=NULL);
+
 
   
   //leave all but B and W spaces
-  for(int i = 0; i < 8; i++)
+  for(int i =0; i <8; i++)
     {
 
-      for(int j = 0; j < 8; j++)
+      for(int j=0; j<8; j++)
 	{
 	  //change all the number spaces to ' ' spaces again
-	        
+	      
 
 	  //jane woke up fix this
 	  if(othello_field[i][j] == 'W')
-	    {
-
-	    }
+	    {}
 	  else if(othello_field[i][j] == 'B')
-	    {
-	                        
-	    }    
+	    {}    
 	  else
 	    othello_field[i][j] = ' ';
-	        
 	}
       
     }
     
   //Increase the turn number 
   turnNumber++;
+  clearLinkedList();
+
+
+
 }
 
 
@@ -789,38 +923,31 @@ void board::drawBoard()
 {
 
   cout << "*****Turn: " << turnNumber+1 << " *****" <<endl;
-  cout << "     Go player : " << whosTurn() << endl;
+  cout << "     Go player : " <<  whosTurn()<< endl;
 
   //formating
   cout << "  ";
   //displays the numbering on the top of the board
-  for(int i = 0; i < 8; i++)
+  for(int i =0; i <8; i++)
     {
-      cout << i << " ";
+      cout << i <<" ";
 
     } 
-  cout << endl;
+  cout <<endl;
 
   //displays the rows and content of the baord
-  for(int i = 0; i < 8; i++)
+  for(int i =0; i <8; i++)
     {
       //formatting
-      cout << i << "|";
-      for(int j = 0; j < 8; j++)
+      cout << i <<"|";
+      for(int j=0; j<8; j++)
 	{
-	  if(othello_field[i][j] == 'B' || othello_field[i][j] == 'W')
-	    {
-	      cout << othello_field[i][j] << "|";
-	    }
-	  else
-	    {
-	      //to adjust color of text of choices
-	      cout << "\033[1;32m" << othello_field[i][j] << "\033[0m" << "|";
-	    }
-	}
+	  cout << othello_field[i][j] << "|";
+	} 
       cout <<endl;
     }
 
   cout << "Black Pieces: " << black_pieces << endl;
   cout << "White Pieces: " << white_pieces << endl;
+
 }
