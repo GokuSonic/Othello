@@ -98,7 +98,7 @@ void board::generateMoves()
 	    //is the space isnt blank then check if its the other player
 	    if (othello_field[i][j] == s_player)
 	    {
-	      // cout << "found spot " << i << " , " << j << " for: " << s_player <<endl;           
+
 	        isValidSpot(i,j,player);   
 	    }       
         }
@@ -122,7 +122,6 @@ void board::clearLinkedList()
 void board::addMove(int index, move newMove)
 {
 
-  //cout << "----------------ADD MOVE" << endl;
   Node  *n1 = new Node;
   Node  *n2 = new Node;
   n1->aMove = newMove;
@@ -133,7 +132,6 @@ void board::addMove(int index, move newMove)
     //search array for moves that have the same row/column move        
     for(int i =0; i<index;i++)
     {         
-      // cout << "index= " << i <<endl;
         n2 = possibleMoves[i];
 
         //make sure the poisition isnt null first
@@ -145,11 +143,9 @@ void board::addMove(int index, move newMove)
 	    { 
 
 	        move temp_move = n2->aMove;
-		//        cout << "\tnode search " << "\n\ttemp move row= " << temp_move.row  << " col= " << temp_move.column << endl;
-	        //        cout << "\tmove row = " << newMove.row << " column = " << newMove.column << endl;
+
 	        if(temp_move.row == newMove.row && temp_move.column == newMove.column)
 	        {
-		    //cout << "\nfound\n" <<endl;
 		    samePositionFound = true;
 		    n2->Next = n1;
 	        }
@@ -157,7 +153,13 @@ void board::addMove(int index, move newMove)
             else
 	    {
 
-	        cout<< "there are multiple moves in this tern " << endl;
+	      /*	        cout<< "there are multiple moves in this tern " << endl;
+                while(n2->Next !=NULL)
+		{  
+		  cout << "loop " << endl;
+		     n2 = n2->Next;
+     		}
+		n2->Next = n1;*/
 	    } 
 
 	    /*
@@ -182,7 +184,6 @@ void board::addMove(int index, move newMove)
     {   
       if(possibleMoves[index] ==NULL)
 	{     
-	  cout <<"adding" <<endl;
 	  possibleMoves[index] =n1;
 	}
     }   
@@ -219,8 +220,6 @@ void board::isValidSpot(int row,int column, char current_player)
   //check up
   if(row != 0)
     {
-      //      if(othello_field[row -1][column] == ' ')
-      //{
         
       flip =0;     
       temp_row = row;
@@ -258,19 +257,17 @@ void board::isValidSpot(int row,int column, char current_player)
 	  addMove(move_count,my_move);
 	      
 	  move_count ++;
-	  cout << "\tup\tRow = " << row-1 << " column = " << column  << "  move = " << move_count -1<< endl;
 	  // drawBoard();
 	  //cin >> flip; 	  
 	}
-      //}
+     
     }
 
   
   //check left
   if(column !=0)
     { 
-      // if(othello_field[row][column-1] == ' ')
-      //{
+ 
         
       flip =0;
       temp_row =row;
@@ -310,21 +307,18 @@ void board::isValidSpot(int row,int column, char current_player)
 	  addMove(move_count,my_move);
 
           move_count ++;
-	  cout << "\tleft\tRow = " << row << " column = " << column-1 <<  "  move = " << move_count-1 << endl;
-
 	  
 	  //	  drawBoard();
 	  //cin >> flip; 	  
 	}
-      //}
+ 
     }
   
   
   //check down
   if(row !=7)
     {
-      // if(othello_field[row+1][column] == ' ')
-      //{
+ 
         
       flip =0;
       temp_row =row;
@@ -363,12 +357,10 @@ void board::isValidSpot(int row,int column, char current_player)
 	  addMove(move_count,my_move);
 
           move_count ++;
-	  cout << "\tdown\tRow = " << row+1  << " column = " << column <<   "  move = " << move_count-1 <<  endl;
 	  
-	  // drawBoard();
-	  ///cin >> flip; 	  
+
 	}
-      //}
+
     }
   
 
@@ -376,8 +368,6 @@ void board::isValidSpot(int row,int column, char current_player)
   //check right
   if(column !=7)
     {
-      // if( othello_field[row][column+1] == ' ')
-      //{
         
       flip =0;
       temp_row =row;
@@ -417,12 +407,11 @@ void board::isValidSpot(int row,int column, char current_player)
 	  addMove(move_count,my_move);
               
           move_count ++;
-	  cout << "\tright\tRow = " << row << " column = " << column+1 <<  "  move = " << move_count-1 <<  endl;
+	
       
-	  // drawBoard();
-	  //cin >> flip; 	  
+
 	}
-      //}
+
     }
   
 
@@ -431,8 +420,6 @@ void board::isValidSpot(int row,int column, char current_player)
   //upLeft
   if(row != 0 || column != 0)
     {
-      //   if(othello_field[row -1][column - 1] == ' ')
-      //{
         
       flip =0;
       temp_row = row;
@@ -470,11 +457,10 @@ void board::isValidSpot(int row,int column, char current_player)
 	  addMove(move_count,my_move);
 
           move_count ++;
-          cout << "\tupLeft\tRow = " << row-1 << " column = " << column-1 << "  move = " << move_count-1 << endl;
-	  //drawBoard();
-	  //cin >> flip; 	  
+        
+
 	}
-      //}
+
     }
 
 
@@ -483,8 +469,6 @@ void board::isValidSpot(int row,int column, char current_player)
   //upRight
   if(row != 0 || column != 7)
     {
-      //   if(othello_field[row -1][column + 1] == ' ')
-      //{
         
       flip =0;
       temp_row = row;
@@ -524,12 +508,11 @@ void board::isValidSpot(int row,int column, char current_player)
 	  addMove(move_count,my_move);
 
           move_count++;
-          cout << "\tupright\tRow = " << row-1 << " column = " << column+1 << "  move = " << move_count-1 <<  endl;
-	  // drawBoard();
-	  //cin >> flip; 	  
+        
+
 	        
       	}
-      //}
+
     }
 
 
@@ -537,8 +520,6 @@ void board::isValidSpot(int row,int column, char current_player)
   //downLeft
   if(row != 7 || column != 0)
     {
-      //   if(othello_field[row + 1][column - 1] == ' ')
-      //{
       
       flip =0;
       temp_row = row;
@@ -580,21 +561,19 @@ void board::isValidSpot(int row,int column, char current_player)
 
 	  addMove(move_count,my_move);
           move_count ++;	  
-	  cout << "\tdownLeft\tRow = " << row+1 << " column = " << column-1 <<  "  move = " << move_count-1 << endl;
+	
 
 	  // drawBoard();
 	  //cin >> flip; 	      
 	}
-      //}
+     
     }
 
 
 
   //downRight
   if(row != 7 || column != 7)
-    {
-      // if(othello_field[row + 1][column + 1] == ' ')
-      //{
+    {     
         
       flip =0;
       temp_row = row;
@@ -634,11 +613,9 @@ void board::isValidSpot(int row,int column, char current_player)
 	  addMove(move_count,my_move);
 	        
           move_count ++;
-	  cout << "\tdownright\tRow = " << row+1 << " column = " << column+1 <<  "  move = " << move_count-1  <<  endl;
-          // drawBoard();
-	  //cin >> flip; 	  
+	
+
 	}
-      //}
     }
 
   
@@ -667,22 +644,18 @@ void board::updatePieces()
 //takes the move count and converts it to its ascii value 
 void board::decToChar(int position, char& tempChar)
 {
- 
-  cout << "in Function decToChar = " << position << ", " << tempChar << endl;
+
 
   //if the position is from 0-9 then add 48
   if(position <=9 && position >= 0)
   {
      tempChar = ((char) (position+48));
-     cout << "\tin FUNC new char " << tempChar << endl;
      
   }
   //now use lowercase numbers
   else  if(position >=10)
   {
     tempChar = ((char) (position+87));
-    cout << "\tIN FUNC  new char == " << tempChar << endl;
-
   }
 
 
@@ -695,8 +668,6 @@ int board::charConvert(char choice)
 {
      int typeCasted = (int)choice;
     
-
-     
      //if from 0-9 return 48-their ascii value
      if(typeCasted >= 48 && typeCasted <=57)
           return  typeCasted-48; 
@@ -720,7 +691,6 @@ int board::charConvert(char choice)
 void board::sendMove(char user_choice)
 {
 
-  cout << "for : " << user_choice << "convert--- ";
   int choice =charConvert(user_choice);
   cout << choice;
 
@@ -733,7 +703,6 @@ void board::sendMove(char user_choice)
   do
   {
 
-       cout <<"\t\tSEND move " <<endl;
 
        //gets the move from the linked list
        
@@ -942,12 +911,19 @@ void board::drawBoard()
       cout << i <<"|";
       for(int j=0; j<8; j++)
 	{
-	  cout << othello_field[i][j] << "|";
+            if(othello_field[i][j] == 'B' || othello_field[i][j] == 'W')
+	    {
+	        cout << othello_field[i][j] << "|";
+	    }
+            else
+	    {
+	        //to adjust the color of the text choices
+	        cout << "\033[1;32m" << othello_field[i][j] << "\033[0m" << "|";
+	    }   
 	} 
       cout <<endl;
     }
 
-  cout << "Black Pieces: " << black_pieces << endl;
   cout << "White Pieces: " << white_pieces << endl;
-
+  cout << "Black Pieces: " << black_pieces << endl;
 }
