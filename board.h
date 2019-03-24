@@ -34,7 +34,6 @@ class board
      //this is the new PM array 
      Node* possibleMoves[20];
 
-
      char othello_field[8][8];
      int move_count;
      int black_pieces;
@@ -53,7 +52,10 @@ class board
      void isValidSpot(int,int,char);
      char whosTurn();
 
-    
+     void decToChar(int, char&);
+
+
+     int charConvert(char);
      void addMove(int,move);
      void clearLinkedList();
 
@@ -65,7 +67,7 @@ class board
      void place(int,int, char);
      bool checkSpace(int,int);
      void generateMoves();
-     void sendMove(int);
+     void sendMove(char);
 
      board();
     ~board();

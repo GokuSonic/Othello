@@ -1,4 +1,4 @@
-/* implementation file*/
+//* implementation file*/
 
 #include "board.h"
 #include <iostream>
@@ -212,7 +212,8 @@ void board::addMove(int index, move newMove)
 void board::isValidSpot(int row,int column, char current_player)
 {
   int flip, temp_row,temp_col;   
-  
+
+  char tempChar = ' ';
   move my_move;
   
   //check up
@@ -229,7 +230,8 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	  while( othello_field[temp_row][temp_col] != player)
 	    {
-	      if(  othello_field[temp_row][temp_col] == ' ')// || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+	      if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57) 
+                   || (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
 		{
 		  flip = 0;
 		  break;
@@ -242,7 +244,11 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	  if(othello_field[row-1][column] == ' ')
 	  {
-	       othello_field[row-1][column] = (char) (move_count+48);
+            
+            decToChar( move_count,tempChar);
+            
+            othello_field[row-1][column] = tempChar;
+
 	  }
 	  my_move.dir = UP;
 	  my_move.flip_count = flip;
@@ -274,7 +280,9 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	  while( othello_field[temp_row][temp_col] != player)
 	    {
-	      if(  othello_field[temp_row][temp_col] == ' ')// || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+	      if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57)
+		   || (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
+
 		{
 		  flip = 0;
 		  break;
@@ -288,7 +296,11 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	  if(othello_field[row][column-1] == ' ')
 	  {
-	      othello_field[row][column-1] = (char) (move_count+48);
+
+            decToChar( move_count,tempChar);
+	    othello_field[row][column-1] =  tempChar;
+
+
 	  }   
 	  my_move.dir = LEFT;
 	  my_move.flip_count = flip;
@@ -321,7 +333,9 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	  while( othello_field[temp_row][temp_col] != player)
 	    {
-	      if(  othello_field[temp_row][temp_col] == ' ')// || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+	      if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57)
+		   || (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
+
 		{
 		  flip = 0;
 		  break;
@@ -336,7 +350,10 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	  if(othello_field[row+1][column] == ' ')
 	  {
-	      othello_field[row+1][column] = (char) (move_count+48);
+            
+                       decToChar( move_count,tempChar);
+		       othello_field[row+1][column] =  tempChar;
+
 	  }
 	  my_move.dir = DOWN;
 	  my_move.flip_count = flip;
@@ -370,8 +387,10 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	  while( othello_field[temp_row][temp_col] != player)
 	    {
-	      if(  othello_field[temp_row][temp_col] == ' ')//  || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
-		{
+	      if(  othello_field[temp_row][temp_col] == ' '  || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57)
+		|| (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
+	
+               {
 		  flip = 0;
 		  break;
 		}
@@ -384,7 +403,11 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	  if(othello_field[row][column+1] == ' ')
 	  {
-	      othello_field[row][column+1] = (char) (move_count+48);
+           
+            decToChar( move_count,tempChar);
+	    othello_field[row][column+1] = tempChar;
+
+
 	  }
 	  my_move.dir = RIGHT;
 	  my_move.flip_count = flip;
@@ -418,7 +441,9 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	  while( othello_field[temp_row][temp_col] != player)
 	    {
-	      if(  othello_field[temp_row][temp_col] == ' ')//  || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+	      if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57)
+		|| (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
+
 	       	{
 		  flip = 0;
 		  break;
@@ -433,7 +458,9 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	   if(othello_field[row-1][column-1] == ' ')
 	   {
-	      othello_field[row-1][column - 1] = (char) (move_count+48);
+                     decToChar( move_count,tempChar);
+		     othello_field[row-1][column - 1] =  tempChar;
+
 	    }
 	  my_move.dir = upLeft;
 	  my_move.flip_count = flip;
@@ -467,7 +494,9 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	  while( othello_field[temp_row][temp_col] != player)
 	    {
-	      if(  othello_field[temp_row][temp_col] == ' ')//  || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+	      if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57)
+		   || (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
+
 		{
 		  flip = 0;
 		  break;
@@ -482,7 +511,9 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	   if(othello_field[row-1][column+1] == ' ')
 	   {
-	      othello_field[row-1][column + 1] = (char) (move_count+48);
+
+            decToChar( move_count,tempChar);
+	    othello_field[row-1][column + 1] = tempChar;
 	   }  
 	  my_move.dir = upRight;
 	  my_move.flip_count = flip;
@@ -517,7 +548,9 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	  while( othello_field[temp_row][temp_col] != player)
 	    {
-	      if(  othello_field[temp_row][temp_col] == ' ')//  || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+	      if(  othello_field[temp_row][temp_col] == ' '|| (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57)
+		   || (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
+
 		{
 		  flip = 0;
 		  break;
@@ -532,7 +565,10 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	  if(othello_field[row+1][column-1] == ' ')
 	  {
-	      othello_field[row+1][column - 1] = (char) (move_count+48);
+	   
+            decToChar( move_count,tempChar);
+	    othello_field[row+1][column - 1] =  tempChar;
+
 	  }
 
 
@@ -546,8 +582,8 @@ void board::isValidSpot(int row,int column, char current_player)
           move_count ++;	  
 	  cout << "\tdownLeft\tRow = " << row+1 << " column = " << column-1 <<  "  move = " << move_count-1 << endl;
 
-	  drawBoard();
-	  cin >> flip; 	      
+	  // drawBoard();
+	  //cin >> flip; 	      
 	}
       //}
     }
@@ -567,7 +603,9 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	  while( othello_field[temp_row][temp_col] != player)
 	    {
-	      if(  othello_field[temp_row][temp_col] == ' ')//  || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57))
+	      if(  othello_field[temp_row][temp_col] == ' '|| (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57)
+		   || (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
+
 		{
 		  flip = 0;
 		  break;
@@ -582,7 +620,10 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	  if(othello_field[row+1][column+1] == ' ')
 	   {
-	      othello_field[row+1][column + 1] = (char) (move_count+48);
+
+                         decToChar( move_count,tempChar);
+			 othello_field[row+1][column + 1] =  tempChar;
+
 	   }
 
 	  my_move.dir = downRight;
@@ -600,7 +641,7 @@ void board::isValidSpot(int row,int column, char current_player)
       //}
     }
 
-
+  
 }
 
 void board::updatePieces()
@@ -623,12 +664,66 @@ void board::updatePieces()
 
 
 
+//takes the move count and converts it to its ascii value 
+void board::decToChar(int position, char& tempChar)
+{
+ 
+  cout << "in Function decToChar = " << position << ", " << tempChar << endl;
+
+  //if the position is from 0-9 then add 48
+  if(position <=9 && position >= 0)
+  {
+     tempChar = ((char) (position+48));
+     cout << "\tin FUNC new char " << tempChar << endl;
+     
+  }
+  //now use lowercase numbers
+  else  if(position >=10)
+  {
+    tempChar = ((char) (position+87));
+    cout << "\tIN FUNC  new char == " << tempChar << endl;
+
+  }
+
+
+}
+
+
+
+//this converts the char to a proper decimal poisition in the array
+int board::charConvert(char choice)
+{
+     int typeCasted = (int)choice;
+    
+
+     
+     //if from 0-9 return 48-their ascii value
+     if(typeCasted >= 48 && typeCasted <=57)
+          return  typeCasted-48; 
+  
+     //if from a-z then return typecast -87 which gives 10+
+     if(typeCasted >= 97 && typeCasted <=122)
+       return typeCasted - 87;
+   
+    
+     //user messed up seg faults 
+     return -1;
+
+}
+
+
+
 //finializes the move to the board clears all the numbers on the board
 //updates black and white pieces
 //update move count
 
-void board::sendMove(int choice)
+void board::sendMove(char user_choice)
 {
+
+  cout << "for : " << user_choice << "convert--- ";
+  int choice =charConvert(user_choice);
+  cout << choice;
+
 
 
   Node  *n1 = new Node;

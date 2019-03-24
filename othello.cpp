@@ -8,7 +8,7 @@ int main()
 
     //creates a new instance of the game
     board myGame;
-    int move;
+    char move;
 
     //do while loop goes here
 
