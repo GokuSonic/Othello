@@ -59,8 +59,8 @@ class board
      void clearLinkedList();
 
      
-     int evaluate(char [][8], char&);
-     char AI( char [][8], int , int , int,int,int);
+     int evaluate(char );
+     char AI( char [][8], int , int , int,int,int,char);
 
 
      //functions the user and agent will use

@@ -707,7 +707,8 @@ void board::sendMove(char user_choice)
   {
 
   Node  *n1 = new Node;
-
+ 
+  cout << " choice : " << choice << endl;
   n1 =  possibleMoves[choice];
 
   do
@@ -949,7 +950,7 @@ void board::findWinner()
     cout << "\n\n********Black is the winner********\n\n" <<endl;
 
   if(white_pieces == black_pieces)
-    cout << "\n\n********Black is the winner********\n\n" <<endl;
+    cout << "\n\n********Tie!********\n\n" <<endl;
 
 }
 
@@ -974,8 +975,23 @@ bool board::checkIfEnd()
 void board::aiTurn(int depth)
 {
 
+
+    //copy board
+    char othello[8][8];
+
+    for(int i=0; i<8;i++)
+    {
+        for(int j=0; j<8; j++)
+	{
+           othello[i][j] =  othello_field[i][j];
+	}
+    }
+
+
     // find the best move possible via Alpha beta pruning
-    char Ai_move = AI(othello_field, 3, black_pieces, white_pieces,0,0);
+    char Ai_move = AI(othello, 4, black_pieces, white_pieces,0,0,'M');
+
+    cout<< "Ai move selected: " << Ai_move << endl;
 
     sendMove(Ai_move);
 
@@ -984,42 +1000,78 @@ void board::aiTurn(int depth)
 
 
 //AI with hursitic function call and alpha beta pruning
-char board::AI(char othello[][8], int depth, int black_best, int white_best, int alpha, int beta)
+char board::AI(char othello[][8], int depth, int black_best, int white_best, int alpha, int beta,char MinorMax)
 {
 
+    int move_number = evaluate(MinorMax);
 
 
-  char selection;
-  int score = evaluate(othello, selection);
-
-  //if blacks
-   
+    //only goes down 3 levels
+    if(depth ==0)
+    {
+       //if from 0-9 put it in format for send move
+       if(move_number>=0 && move_number <= 9)
+          return (char)(move_number +48);
   
-  //
+       if(move_number >=10 && move_count <= 35)
+          return (char)(move_number + 87);
+    }
 
-  /*
-   int score = findSolution(othello);
 
-      
-   if(score ==3)
-      current char;
+    cout << "max" << depth << endl; 
+    if( black_best > white_best)
+    {
+       //max
+      return AI(othello,depth-1,black_best,white_best,alpha,beta,'0');
+     
+    }
 
-   if(score ==-3)
-     return score;
 
-  */
-   
+    /*
+    if(depth !=0)
+    {
 
+      if( 
+
+         if(score > black_best)
+	    break; 
+         else
+            white_best = *
+
+
+	 /*
+
+      if(alphabeta)then
+         if(to_mov(white) and (the score> whites best)
+             if(the score > blacks_ best)
+                    break; /alpha beat cutoff
+
+             else
+                 white's best = the score
+
+         end 
+      end
+
+        if (to move(black) and (the score < blacks best))
+            if(the score < blacks best) 
+                break //alpha beta cutt off
+            else
+                 blacks_best = the score
+          end
+      end
+   end   
+    */
 
 }
 
 
 //finds the best move 
-int board::evaluate(char othello[][8], char& selection)
+int board::evaluate(char minORmax)
 {
 
-       int weights[8][8] = 
-      { {4, -3, 2, 2, 2, 2, -3, 4},
+        //board weights created by team
+        int weights[8][8] = 
+       { {4, -3, 2, 2, 2, 2, -3, 4},
 	{-3, -4, -1, -1, -1, -1, -4, -3},
 	{2, -1, 1, 0, 0, 1, -1, 2},
         {2, -1, 0, 1, 1, 0, -1, 2},
@@ -1028,11 +1080,92 @@ int board::evaluate(char othello[][8], char& selection)
         {-3, -4, -1, -1, -1, -1, -4, -3},
 	{4, -3, 2, 2, 2, 2, -3, 4} };
      
+	int best_score =0;
+        int best_move_index =0;
+        //generate moves to populate the move linked list
+        generateMoves();
 
-          
-       //generate moves
-       //get all moves flip count + weight valuve
-       // return best value
+        Node  *n1 = new Node;       
+       
+        if(minORmax == 'M')
+	{
 
+            if(move_count >0)
+            {
+           
+               //finds the move with the best move
+	       int j =0;
+	       while( j< move_count)
+               {
+	          //makes sure the move isnt null
+	          if(possibleMoves[j] != NULL)
+	          {
+                     n1 =  possibleMoves[j];
+
+                     //gets the move from the linked list
+                     move temp_move = n1->aMove;
+                     int flip = temp_move.flip_count;
+		     int row = temp_move.row;
+		     int column = temp_move.column;
+		     int score=0;
+               
+		     //calculate the huristic
+		     score = flip + weights[row][column];                  
+		     cout << "score: " << score << "  best_score" << best_score << "    for row = " << row << "  col= "<< column <<endl;
+		     //if current move is better than best move
+		     if(score > best_score)
+		     {
+		       best_score =score;
+		       cout <<" found at " << j<<endl;
+   	   	       best_move_index = j;
+		     }                                       
+                   
+		  }
+		  j++;
+	       }
+	    }
+	}
+        else
+	{
+	  if(move_count >0)
+            {
+
+	      //finds the move with the best move
+	      int j =0;
+	      while( j< move_count)
+		{
+                  //makes sure the move isnt null
+                  if(possibleMoves[j] != NULL)
+		    {
+		      n1 =  possibleMoves[j];
+
+		      //gets the move from the linked list
+		      move temp_move = n1->aMove;
+		      int flip = temp_move.flip_count;
+		      int row = temp_move.row;
+		      int column = temp_move.column;
+		      int score=0;
+
+		      //calculate the huristic
+		      score = flip + weights[row][column];
+		      cout << "score: " << score << "  best_score" << best_score << "    for row = " << row << "  col\
+= "<< column <<endl;
+		      //if current move is better than best move
+		      if(score < best_score)
+			{
+			  best_score =score;
+			  cout <<" found at " << j<<endl;
+			  best_move_index = j;
+			}
+
+		    }
+                  j++;
+		}
+            }
+      }
+
+      
+       //return best move index
+       return best_move_index;
 }
 
