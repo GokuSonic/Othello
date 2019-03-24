@@ -15,7 +15,7 @@ int main()
     do
     {
     
-
+       cout << "\n\n----Human's Turn----\n" << endl;       
        myGame.generateMoves();
 
        cout << "Choose one of the moves: ";
@@ -23,24 +23,13 @@ int main()
 
        myGame.sendMove(move);
 
-       /*
-        //the AI's turn
-       cout <<"\n----Ai's turn----" <<endl;
-       myGame.generateMoves();
-
-       cout << "Choose one of the moves: " << endl;
-       cin >> move;
-
-       myGame.sendMove(move);
-
-       */
-
-
-        //end of do while loop
+       cout << "\n\n\t----Computer's Turn----\n" << endl;       
+       myGame.aiTurn(3);
  
-        //find winner of game goes here
+       //keeps going until the game is over 
+    }while(!myGame.checkIfEnd());
 
-    }while(true);
+    myGame.findWinner();
 
     return 0;
 }

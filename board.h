@@ -33,7 +33,6 @@ class board
 
      //this is the new PM array 
      Node* possibleMoves[20];
-
      char othello_field[8][8];
      int move_count;
      int black_pieces;
@@ -59,6 +58,10 @@ class board
      void addMove(int,move);
      void clearLinkedList();
 
+     
+     int evaluate(char [][8], char&);
+     char AI( char [][8], int , int , int,int,int);
+
 
      //functions the user and agent will use
    public:
@@ -68,6 +71,12 @@ class board
      bool checkSpace(int,int);
      void generateMoves();
      void sendMove(char);
+
+     void findWinner();
+     bool checkIfEnd();
+     
+     void aiTurn(int);
+
 
      board();
     ~board();

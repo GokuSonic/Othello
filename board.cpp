@@ -22,10 +22,11 @@ board::board()
     }
 
   //starting 4 pieces
-  othello_field[3][3]= 'W';
+   othello_field[3][3]= 'W';
   othello_field[3][4]= 'B';
   othello_field[4][3]= 'B';
   othello_field[4][4]= 'W';
+  
 
   //we now have 2 pieces and denote player as black and agent as white
   black_pieces = 2;
@@ -111,11 +112,17 @@ void board::generateMoves()
 
 void board::clearLinkedList()
 {
+
+  Node  *n1 = new Node;
+  Node  *n2 = new Node;
+
+
   //initializes the array to NULL
-  for(int i =0; i<20; i++)
+    for(int i =0; i<20; i++)
     {
       possibleMoves[i] = NULL;
     }
+  
 }
 
 
@@ -188,9 +195,9 @@ void board::addMove(int index, move newMove)
 	}
     }   
   
-  /*
+  
   //see whats in the linked list debugging only
-  for(int i =0; i<=index;i++)
+  /*  for(int i =0; i<index;i++)
     {
       cout << "index= " <<  i  <<endl;
       n2 = possibleMoves[i];
@@ -220,7 +227,6 @@ void board::isValidSpot(int row,int column, char current_player)
   //check up
   if(row != 0)
     {
-        
       flip =0;     
       temp_row = row;
       temp_col= column;
@@ -478,7 +484,7 @@ void board::isValidSpot(int row,int column, char current_player)
 	{
 	  while( othello_field[temp_row][temp_col] != player)
 	    {
-	      if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57)
+	        if(  othello_field[temp_row][temp_col] == ' ' || (othello_field[temp_row][temp_col] >= (char)48 && othello_field[temp_row][temp_col] <= (char)57)
 		   || (othello_field[temp_row][temp_col] >= (char)97 && othello_field[temp_row][temp_col] <= (char)122))
 
 		{
@@ -520,7 +526,7 @@ void board::isValidSpot(int row,int column, char current_player)
   //downLeft
   if(row != 7 || column != 0)
     {
-      
+     
       flip =0;
       temp_row = row;
       temp_col= column;
@@ -692,9 +698,13 @@ void board::sendMove(char user_choice)
 {
 
   int choice =charConvert(user_choice);
-  cout << choice;
-
-
+ 
+  if(choice == -1)
+  {
+      cout << "no move was selected" <<endl; 
+  }
+  else
+  {
 
   Node  *n1 = new Node;
 
@@ -855,7 +865,7 @@ void board::sendMove(char user_choice)
        n1 = n1->Next;
   }while(n1 !=NULL);
 
-
+  }
   
   //leave all but B and W spaces
   for(int i =0; i <8; i++)
@@ -927,3 +937,102 @@ void board::drawBoard()
   cout << "White Pieces: " << white_pieces << endl;
   cout << "Black Pieces: " << black_pieces << endl;
 }
+
+
+//finds the winner of the game
+void board::findWinner()
+{
+
+  if(white_pieces > black_pieces)
+    cout << "\n\n********White is the winner********\n\n" <<endl;
+  if(white_pieces < black_pieces)
+    cout << "\n\n********Black is the winner********\n\n" <<endl;
+
+  if(white_pieces == black_pieces)
+    cout << "\n\n********Black is the winner********\n\n" <<endl;
+
+}
+
+
+//checks if the game is over
+bool board::checkIfEnd()
+{
+
+    // one player cant move anymore
+    if(white_pieces ==0 ||  black_pieces == 0)
+      return true;
+
+
+    return false;
+
+}
+
+
+
+
+//public AI CALL
+void board::aiTurn(int depth)
+{
+
+    // find the best move possible via Alpha beta pruning
+    char Ai_move = AI(othello_field, 3, black_pieces, white_pieces,0,0);
+
+    sendMove(Ai_move);
+
+
+}
+
+
+//AI with hursitic function call and alpha beta pruning
+char board::AI(char othello[][8], int depth, int black_best, int white_best, int alpha, int beta)
+{
+
+
+
+  char selection;
+  int score = evaluate(othello, selection);
+
+  //if blacks
+   
+  
+  //
+
+  /*
+   int score = findSolution(othello);
+
+      
+   if(score ==3)
+      current char;
+
+   if(score ==-3)
+     return score;
+
+  */
+   
+
+
+}
+
+
+//finds the best move 
+int board::evaluate(char othello[][8], char& selection)
+{
+
+       int weights[8][8] = 
+      { {4, -3, 2, 2, 2, 2, -3, 4},
+	{-3, -4, -1, -1, -1, -1, -4, -3},
+	{2, -1, 1, 0, 0, 1, -1, 2},
+        {2, -1, 0, 1, 1, 0, -1, 2},
+        {2, -1, 0, 1, 1, 0, -1, 2},
+	{2, -1, 1, 0, 0, 1, -1, 2},
+        {-3, -4, -1, -1, -1, -1, -4, -3},
+	{4, -3, 2, 2, 2, 2, -3, 4} };
+     
+
+          
+       //generate moves
+       //get all moves flip count + weight valuve
+       // return best value
+
+}
+
