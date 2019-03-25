@@ -60,7 +60,7 @@ class board
 
      
      int evaluate(char );
-     char AI( char [][8], int , int , int,int,int,char);
+     char AI( char [][8], int , int , int,int,int);
 
 
      //functions the user and agent will use
