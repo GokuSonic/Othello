@@ -1,0 +1,7 @@
+1) Unzip the folder to your computer.
+2) Transfer the files to a folder on empress name Othello.
+3) Go into Othello folder.
+4) run the following commands
+
+  g++ board.cpp othello.cpp
+  ./a.out
